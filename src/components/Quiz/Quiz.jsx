@@ -142,14 +142,12 @@ export default function Quiz() {
     initializeQuiz();
   }, [language, navigate]);
 
-  // Таймер
   useEffect(() => {
     if (isLoading || isQuizFinished || isSubmitting) return;
 
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          // Час вийшов, автоматично переходимо до наступної літери
           handleNextLetter();
           return TIME_PER_LETTER;
         }
@@ -164,7 +162,6 @@ export default function Quiz() {
     };
   }, [currentLetterIndex, isLoading, isQuizFinished, isSubmitting]);
 
-  // Оновлюємо таймер при зміні поточної літери
   useEffect(() => {
     if (letters.length > 0 && currentLetterIndex < letters.length) {
       setTimeLeft(TIME_PER_LETTER);
@@ -173,7 +170,6 @@ export default function Quiz() {
 
   const handleNextLetter = async () => {
     if (currentLetterIndex >= letters.length - 1) {
-      // Остання літера - завершуємо квіз
       setIsQuizFinished(true);
       if (timerRef.current) {
         clearInterval(timerRef.current);
@@ -181,7 +177,6 @@ export default function Quiz() {
       return;
     }
 
-    // Переходимо до наступної літери
     setCurrentLetterIndex((prev) => prev + 1);
     if (canvasRef.current) {
       canvasRef.current.clearCanvas();
@@ -197,10 +192,7 @@ export default function Quiz() {
     setIsSubmitting(true);
 
     try {
-      // Отримуємо малюнок користувача
       const userPicture = await canvasRef.current.exportImage("png");
-      
-      // Отримуємо еталонне зображення для порівняння
       const letterImageUrl = await getLetterImage(language, currentLetter);
       if (!letterImageUrl) {
         throw new Error("Failed to get letter image");
@@ -208,7 +200,6 @@ export default function Quiz() {
       const ethalonImageBase64 = await convertSvgToPng(letterImageUrl);
       const ethalonImage = `data:image/png;base64,${ethalonImageBase64}`;
 
-      // Відправляємо на оцінку асинхронно (не чекаємо відповіді)
       sendLetterForEvaluation(
         token,
         language,
@@ -216,11 +207,9 @@ export default function Quiz() {
         userPicture,
         ethalonImage,
       ).then((result) => {
-        // Перевіряємо що результат валідний перед додаванням
         if (result && typeof result.percents === 'number' && !isNaN(result.percents)) {
           setResults((prev) => [...prev, result]);
         } else {
-          // Якщо результат не валідний, додаємо результат з помилкою
           const errorResult = {
             letter: currentLetter,
             percents: 0,
@@ -231,7 +220,6 @@ export default function Quiz() {
         }
       }).catch((error) => {
         console.error("Error evaluating letter:", error);
-        // Додаємо результат з помилкою
         const errorResult = {
           letter: currentLetter,
           percents: 0,
@@ -241,11 +229,9 @@ export default function Quiz() {
         setResults((prev) => [...prev, errorResult]);
       });
 
-      // Одразу показуємо наступну літеру
       if (currentLetterIndex < letters.length - 1) {
         await handleNextLetter();
       } else {
-        // Остання літера - завершуємо квіз одразу, результати будуть додаватися асинхронно
         if (timerRef.current) {
           clearInterval(timerRef.current);
         }
@@ -254,7 +240,6 @@ export default function Quiz() {
     } catch (e) {
       console.error(e);
       alert("Failed to submit letter");
-      // Додаємо результат з помилкою
       const errorResult = {
         letter: currentLetter,
         percents: 0,
@@ -262,11 +247,10 @@ export default function Quiz() {
         status: null,
       };
       setResults((prev) => [...prev, errorResult]);
-      
+
       if (currentLetterIndex < letters.length - 1) {
         await handleNextLetter();
       } else {
-        // Остання літера - завершуємо квіз
         if (timerRef.current) {
           clearInterval(timerRef.current);
         }
@@ -277,7 +261,6 @@ export default function Quiz() {
     }
   };
 
-  // Функція для визначення класу за оцінкою
   const getScoreClass = (score) => {
     if (score >= 80) return "score-excellent";
     if (score >= 60) return "score-good";
@@ -285,7 +268,6 @@ export default function Quiz() {
     return "score-poor";
   };
 
-  // Розрахунок прогресу
   const progress = ((currentLetterIndex + 1) / TOTAL_LETTERS) * 100;
   const timeProgress = ((TIME_PER_LETTER - timeLeft) / TIME_PER_LETTER) * 100;
 
@@ -298,7 +280,6 @@ export default function Quiz() {
   }
 
   if (isQuizFinished) {
-    // Створюємо об'єкт результатів для швидкого доступу
     const resultsMap = {};
     results.forEach(result => {
       if (result && result.letter) {
@@ -306,20 +287,17 @@ export default function Quiz() {
       }
     });
 
-    // Створюємо масив для всіх літер (навіть якщо результати ще не прийшли)
     const allResults = letters.map(letter => {
       return resultsMap[letter] || {
         letter: letter,
-        percents: null, // null означає що результат ще завантажується
+        percents: null,
         advice: null,
         status: null,
       };
     });
 
-    // Сортуємо за порядком літер
     const sortedResults = [...allResults];
 
-    // Розраховуємо середній бал тільки з валідними результатами
     const validResults = sortedResults.filter(r => r && typeof r.percents === 'number' && !isNaN(r.percents));
     const averageScore = validResults.length > 0
       ? Math.round(
@@ -327,8 +305,6 @@ export default function Quiz() {
             validResults.length,
         )
       : 0;
-    
-    // Перевіряємо чи всі результати прийшли
     const allResultsLoaded = sortedResults.every(r => r && typeof r.percents === 'number' && !isNaN(r.percents));
 
     return (
@@ -337,8 +313,7 @@ export default function Quiz() {
           <h2 className="quiz-results-title">
             <Trans i18nKey="quizPage.resultsTitle">Результати квізу</Trans>
           </h2>
-          
-          {/* Середній бал спочатку */}
+
           {validResults.length > 0 && (
             <div className="quiz-average-card">
               <div className="quiz-average-label">
@@ -350,27 +325,26 @@ export default function Quiz() {
               <div className="quiz-average-score">{averageScore}%</div>
             </div>
           )}
-          
+
           {validResults.length === 0 && (
             <div className="quiz-loading-message">
               <Trans i18nKey="quizPage.loadingResults">Завантаження результатів...</Trans>
               <div className="loader-spinner"></div>
             </div>
           )}
-          
+
           {sortedResults.length > 0 && (
             <>
 
               {/* Результати по літерам */}
               <div className="results-grid">
                 {sortedResults.map((result, index) => {
-                  // Перевіряємо що результат валідний
-                  const percents = (result && typeof result.percents === 'number' && !isNaN(result.percents)) 
-                    ? result.percents 
+                  const percents = (result && typeof result.percents === 'number' && !isNaN(result.percents))
+                    ? result.percents
                     : null;
                   const letter = result?.letter || '?';
                   const isLoaded = percents !== null;
-                  
+
                   return (
                     <div key={index} className={`result-card ${!isLoaded ? 'result-card-loading' : ''}`}>
                       <div className="result-card-header">
@@ -399,7 +373,7 @@ export default function Quiz() {
               </div>
             </>
           )}
-          
+
           <div className="quiz-results-buttons">
             <button
               className="quiz-button quiz-button-primary"
