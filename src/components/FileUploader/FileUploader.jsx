@@ -1,0 +1,252 @@
+import { useEffect, useRef, useState } from "react";
+import ResultModal from "../ResultModal/ResultModal.jsx";
+import { useTranslation, Trans } from "react-i18next";
+import fileImg from "../../assets/upload-file-svgrepo-com.svg";
+import "./FileUploader.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import arrow from "../../assets/right-arrow-svgrepo-com.svg";
+import audioImage from "../../assets/audio-svgrepo-com.svg";
+import convertSvgToPng from "../utils/convertSvgToPng.js";
+import * as React from "react";
+
+export default function FileUploader() {
+  const ethalonFileInputRef = useRef(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [ethalonFile, setEthalonFile] = useState(null);
+  const resultModalRef = useRef(null);
+  const [modalText, setModalText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [letterImage, setLetterImage] = useState(null);
+  const [advice, setAdvice] = useState(null);
+  const [base64Ethalon, setBase64Ethalon] = useState(null);
+  const [nextLetter, setNextLetter] = useState(null);
+  const [prevLetter, setPrevLetter] = useState(null);
+  const { t, i18n } = useTranslation();
+  const token = localStorage.getItem("token");
+  const searchParams = new URLSearchParams(location.search);
+  const letter = searchParams.get("letter");
+  const language = searchParams.get("language");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  useEffect(() => {
+    if (letter === null || language === null || !letter || !language) {
+      return navigate(`/select-language?sketch=free`);
+    }
+    fetch("https://letters-back.vercel.app/letter", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        language: language,
+        letter: letter,
+      }),
+    })
+      .then((res) => res.json())
+      .then(async (data) => {
+        console.log(data);
+        const base64 = data.image;
+
+        // Convert base64 SVG to PNG
+        const pngBase64 = await convertSvgToPng(
+          `data:image/svg+xml;base64,${base64}`,
+        );
+        if (pngBase64) {
+          setLetterImage(`data:image/png;base64,${pngBase64}`);
+        }
+
+        setIsLoading(false);
+        setBase64Ethalon(base64);
+        setNextLetter(data.nextLetter);
+        setPrevLetter(data.prevLetter);
+      })
+      .catch((e) => {
+        console.log(e);
+        return navigate(`/select-language?sketch=free`);
+      });
+  }, [letter, language, navigate]);
+
+  function handleInputChange(e) {
+    setEthalonFile(URL.createObjectURL(ethalonFileInputRef.current.files[0]));
+  }
+
+  function handleClearFiles(e) {
+    const buttonId = e.target.id;
+
+    if (buttonId === "mefile1-clear-button") {
+      setEthalonFile(null);
+      if (ethalonFileInputRef.current) {
+        ethalonFileInputRef.current.value = "";
+      }
+    }
+  }
+
+  async function handleSendFiles() {
+    setIsLoading(true);
+
+    const userFile = ethalonFileInputRef.current.files[0];
+
+    if (!userFile) {
+      alert("Будь ласка завантаж файл");
+      setIsLoading(false);
+      return;
+    }
+
+    const toBase64 = (file) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const base64String = reader.result;
+          resolve(base64String);
+        };
+        reader.onerror = (err) => reject(err);
+      });
+
+    try {
+      const userBase64 = await toBase64(userFile);
+
+      const response = await fetch(
+        "https://letters-back.vercel.app/sendImages",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({
+            ethalonImage: letterImage,
+            userImage: userBase64,
+            letter: letter,
+            language: language,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      setModalText(data.percents);
+      setAdvice(data.result.advice);
+    } catch (error) {
+      console.error("Error sending files:", error);
+      setModalText("Error occurred while sending files.");
+    } finally {
+      resultModalRef.current.open();
+      setIsLoading(false);
+    }
+  }
+
+  let button;
+  if (!isLoading) {
+    button = (
+      <button
+        disabled={isLoading}
+        className="file-uploader-button"
+        onClick={handleSendFiles}
+      >
+        <Trans i18nKey="comparePage.startButtonNotLoading">Поріняти</Trans>
+      </button>
+    );
+  } else {
+    button = (
+      <button
+        disabled={isLoading}
+        className="file-uploader-button"
+        onClick={handleSendFiles}
+      >
+        <Trans i18nKey="comparePage.startButtonLoading">Порівнюємо ...</Trans>
+      </button>
+    );
+  }
+
+  const handleArrowClick = (direction) => {
+    if (direction === "next" && nextLetter) {
+      setEthalonFile(null);
+      if (ethalonFileInputRef.current) {
+        ethalonFileInputRef.current.value = "";
+      }
+      navigate(`/file-uploader?letter=${nextLetter}&language=${language}`);
+    } else if (direction === "prev" && prevLetter) {
+      setEthalonFile(null);
+      if (ethalonFileInputRef.current) {
+        ethalonFileInputRef.current.value = "";
+      }
+      navigate(`/file-uploader?letter=${prevLetter}&language=${language}`);
+    }
+  };
+
+  return (
+    <div className="file-uploader">
+      {isLoading && (
+        <div className="loader-overlay">
+          <div className="loader-spinner"></div>
+        </div>
+      )}
+      <ResultModal ref={resultModalRef} result={modalText} advice={advice} />
+      <div className="file-uploader-sections">
+        <div className="file-uploader-section">
+          <h2 className="file-section-title">
+            <Trans i18nKey="comparePage.firstElement.title">Файл зі зразком</Trans>
+          </h2>
+          <label className="file-label">
+            <span className="file-icon">+</span>
+            <span className="file-label-text">
+              <Trans i18nKey="comparePage.inputText">Завантажити</Trans>
+            </span>
+            <input
+              className="file-input"
+              id="sampleFileInput"
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              disabled
+            />
+          </label>
+        </div>
+
+        <div className="file-uploader-section">
+          <h2 className="file-section-title">
+            <Trans i18nKey="comparePage.secondElement.title">Файл з письмом</Trans>
+          </h2>
+          <label className="file-label">
+            <span className="file-icon">+</span>
+            <span className="file-label-text">
+              <Trans i18nKey="comparePage.inputText">Завантажити</Trans>
+            </span>
+            <input
+              className="file-input"
+              id="FileInput"
+              name="ethalonFile"
+              type="file"
+              accept="image/*"
+              ref={ethalonFileInputRef}
+              onChange={handleInputChange}
+              style={{ display: "none" }}
+            />
+          </label>
+          {ethalonFile && (
+            <button
+              onClick={handleClearFiles}
+              className="clear-button"
+              id="mefile1-clear-button"
+            >
+              <Trans i18nKey="comparePage.clearButton">Очистити</Trans>
+            </button>
+          )}
+        </div>
+      </div>
+      {button && (
+        <div className="file-uploader-submit">
+          {button}
+        </div>
+      )}
+    </div>
+  );
+}

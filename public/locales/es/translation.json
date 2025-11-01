@@ -1,0 +1,67 @@
+{
+  "NavBar": {
+    "list": {
+      "MainPage": "Inicio",
+      "StudyPage": "Estudio",
+      "ReviewPage": "Prueba",
+      "ComparePage": "Modo libre"
+    }
+  },
+  "MainPage": {
+    "title": "Comienza a aprender",
+    "startButton": "Comenzar",
+    "studySection": {
+      "title": "Estudio de letras",
+      "description": "Aprende a escribir letras correctamente usando el modo de dibujo interactivo. El sistema analizará tus intentos y te dará retroalimentación sobre la precisión de la escritura."
+    },
+    "reviewSection": {
+      "title": "Reforzar el aprendizaje",
+      "description": "Practica escribir letras sin pistas para fortalecer tus habilidades. Obtén un análisis detallado de tus resultados y mejora tu técnica de escritura."
+    },
+    "compareSection": {
+      "title": "Modo libre",
+      "description": "Sube tus propias imágenes de letras para practicar. Ideal para trabajar con letras específicas o fuentes personalizadas."
+    }
+  },
+  "SelectLanguagePage": {
+    "title": "Elige un idioma",
+    "options": {
+      "ua": "Ucraniano",
+      "en": "Inglés",
+      "jp": "Japonés"
+    },
+    "subtitle": "Idioma seleccionado: ",
+    "startButton": "Comenzar"
+  },
+  "comparePage": {
+    "firstElement": {
+      "title": "Archivo de muestra"
+    },
+    "secondElement": {
+      "title": "Archivo de escritura"
+    },
+    "inputText": "Subir",
+    "startButtonNotLoading": "Comparar",
+    "startButtonLoading": "Comparando ...",
+    "experimental": "¡Función experimental!",
+    "instructions": "Tome una foto de la letra y luego presione el botón \"subir\"",
+    "prevArrow": "Letra anterior",
+    "nextArrow": "Letra siguiente",
+    "clearButton": "Limpiar"
+  },
+  "canvasPage": {
+    "sendButtonActive": "Enviando ...",
+    "sendButtonInactive": "Enviar",
+    "clearCanvasButton": "Borrar"
+  },
+  "resultModal": {
+    "title": "Tu resultado: ",
+    "description": "Consejos:",
+    "continueButton": "Continuar"
+  },
+  "404Page": {
+    "title": "Esta página está fuera del universo.",
+    "description": "La página que estás intentando acceder no existe o ha sido movida. Intenta volver a nuestra página de inicio.",
+    "homeButton": "Volver a la página principal"
+  }
+}

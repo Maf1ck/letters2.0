@@ -1,0 +1,72 @@
+{
+  "NavBar": {
+    "list": {
+      "MainPage": "Home",
+      "StudyPage": "Study",
+      "ReviewPage": "Testing",
+      "ComparePage": "Free Mode"
+    }
+  },
+  "MainPage": {
+    "title": "Start Learning",
+    "startButton": "Start",
+    "studySection": {
+      "title": "Letter Study",
+      "description": "Learn to write letters correctly using the interactive drawing mode. The system will analyze your attempts and provide feedback on writing accuracy."
+    },
+    "reviewSection": {
+      "title": "Reinforce Learning",
+      "description": "Practice writing letters without hints to strengthen your skills. Get detailed analysis of your results and improve your writing technique."
+    },
+    "compareSection": {
+      "title": "Free Mode",
+      "description": "Upload your own letter images for practice. Ideal for working with specific letters or special fonts."
+    }
+  },
+  "SelectLanguagePage": {
+    "title": "Choose Language",
+    "options": {
+      "ua": "Ukrainian",
+      "en": "English",
+      "jp": "Japanese",
+      "fr": "French",
+      "de": "German",
+      "es": "Spanish",
+      "ro": "Romanian",
+      "zh": "Chinese"
+    },
+    "subtitle": "Selected language: ",
+    "startButton": "Start"
+  },
+  "comparePage": {
+    "firstElement": {
+      "title": "Sample File"
+    },
+    "secondElement": {
+      "title": "Handwriting File"
+    },
+    "inputText": "Upload",
+    "startButtonNotLoading": "Compare",
+    "startButtonLoading": "Comparing ...",
+    "experimental": "Experimental function!",
+    "instructions": "Take a photo of letter and then press button \"upload\"",
+    "prevArrow": "Previous letter",
+    "nextArrow": "Next letter",
+    "clearButton": "Clear"
+  },
+  "canvasPage": {
+    "sendButtonActive": "Sending ...",
+    "sendButtonInactive": "Send",
+    "clearCanvasButton": "Clear"
+  },
+  "resultModal": {
+    "title": "Your result: ",
+    "description": "Tips:",
+    "continueButton": "Continue"
+  },
+  "404Page": {
+    "title": "This page is outside of the universe.",
+    "description": "The page you are trying to access doesn't exist or has been moved. Try going back to our homepage.",
+    "homeButton": "Go to home"
+  }
+}

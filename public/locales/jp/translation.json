@@ -1,0 +1,72 @@
+{
+  "NavBar": {
+    "list": {
+      "MainPage": "ホーム",
+      "StudyPage": "学習",
+      "ReviewPage": "テスト",
+      "ComparePage": "フリーモード"
+    }
+  },
+  "MainPage": {
+    "title": "学習を始める",
+    "startButton": "開始",
+    "studySection": {
+      "title": "文字の学習",
+      "description": "インタラクティブな描画モードを使用して、文字の正しい書き方を学びましょう。システムがあなたの試みを分析し、書き方の正確さについてフィードバックを提供します。"
+    },
+    "reviewSection": {
+      "title": "学習内容の強化",
+      "description": "ヒントなしで文字を書く練習をして、スキルを強化しましょう。結果の詳細な分析を受け取り、書き方の技術を向上させましょう。"
+    },
+    "compareSection": {
+      "title": "フリーモード",
+      "description": "練習用に自分の文字画像をアップロードしましょう。特定の文字や特殊なフォントでの作業に最適です。"
+    }
+  },
+  "SelectLanguagePage": {
+    "title": "言語を選択",
+    "options": {
+      "ua": "ウクライナ語",
+      "en": "英語",
+      "jp": "日本語",
+      "fr": "フランス語",
+      "de": "ドイツ語",
+      "es": "スペイン語",
+      "ro": "ルーマニア語",
+      "zh": "中国語"
+    },
+    "subtitle": "選択された言語: ",
+    "startButton": "開始"
+  },
+  "comparePage": {
+    "firstElement": {
+      "title": "サンプルファイル"
+    },
+    "secondElement": {
+      "title": "手書きファイル"
+    },
+    "inputText": "アップロード",
+    "startButtonNotLoading": "比較",
+    "startButtonLoading": "比較中 ...",
+    "experimental": "実験的機能！",
+    "instructions": "文字の写真を撮って「アップロード」ボタンを押してください",
+    "prevArrow": "前の文字",
+    "nextArrow": "次の文字",
+    "clearButton": "クリア"
+  },
+  "canvasPage": {
+    "sendButtonActive": "送信中...",
+    "sendButtonInactive": "送信",
+    "clearCanvasButton": "クリア"
+  },
+  "resultModal": {
+    "title": "あなたの結果: ",
+    "description": "ヒント：",
+    "continueButton": "続行"
+  },
+  "404Page": {
+    "title": "このページは宇宙の外にあります。",
+    "description": "アクセスしようとしているページが存在しないか、移動されています。ホームページに戻ってください。",
+    "homeButton": "ホームに戻る"
+  }
+}

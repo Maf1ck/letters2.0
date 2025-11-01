@@ -1,0 +1,72 @@
+{
+  "NavBar": {
+    "list": {
+      "MainPage": "Accueil",
+      "StudyPage": "Étude",
+      "ReviewPage": "Test",
+      "ComparePage": "Mode libre"
+    }
+  },
+  "MainPage": {
+    "title": "Commencer l'apprentissage",
+    "startButton": "Démarrer",
+    "studySection": {
+      "title": "Étude des lettres",
+      "description": "Apprenez à écrire correctement les lettres en utilisant le mode de dessin interactif. Le système analysera vos tentatives et fournira des retours sur la précision de l'écriture."
+    },
+    "reviewSection": {
+      "title": "Renforcer l'apprentissage",
+      "description": "Entraînez-vous à écrire des lettres sans indices pour renforcer vos compétences. Obtenez une analyse détaillée de vos résultats et améliorez votre technique d'écriture."
+    },
+    "compareSection": {
+      "title": "Mode libre",
+      "description": "Téléchargez vos propres images de lettres pour vous entraîner. Idéal pour travailler avec des lettres spécifiques ou des polices spéciales."
+    }
+  },
+  "SelectLanguagePage": {
+    "title": "Choisir la langue",
+    "options": {
+      "ua": "Ukrainien",
+      "en": "Anglais",
+      "jp": "Japonais",
+      "fr": "Français",
+      "de": "Allemand",
+      "es": "Espagnol",
+      "ro": "Roumain",
+      "zh": "Chinois"
+    },
+    "subtitle": "Langue sélectionnée : ",
+    "startButton": "Démarrer"
+  },
+  "comparePage": {
+    "firstElement": {
+      "title": "Fichier exemple"
+    },
+    "secondElement": {
+      "title": "Fichier d'écriture"
+    },
+    "inputText": "Télécharger",
+    "startButtonNotLoading": "Comparer",
+    "startButtonLoading": "Comparaison en cours ...",
+    "experimental": "Fonction expérimentale !",
+    "instructions": "Prenez une photo de la lettre puis appuyez sur le bouton \"télécharger\"",
+    "prevArrow": "Lettre précédente",
+    "nextArrow": "Lettre suivante",
+    "clearButton": "Effacer"
+  },
+  "canvasPage": {
+    "sendButtonActive": "Envoi en cours...",
+    "sendButtonInactive": "Envoyer",
+    "clearCanvasButton": "Effacer"
+  },
+  "resultModal": {
+    "title": "Votre résultat : ",
+    "description": "Conseils :",
+    "continueButton": "Continuer"
+  },
+  "404Page": {
+    "title": "Page non trouvée",
+    "description": "La page que vous cherchez n'existe pas.",
+    "homeButton": "Retour à l'accueil"
+  }
+}

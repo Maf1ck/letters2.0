@@ -1,0 +1,72 @@
+{
+  "NavBar": {
+    "list": {
+      "MainPage": "主页",
+      "StudyPage": "学习",
+      "ReviewPage": "测试",
+      "ComparePage": "自由模式"
+    }
+  },
+  "MainPage": {
+    "title": "开始学习",
+    "startButton": "开始",
+    "studySection": {
+      "title": "字母学习",
+      "description": "使用交互式绘图模式学习正确书写字母。系统将分析您的尝试并提供关于书写准确性的反馈。"
+    },
+    "reviewSection": {
+      "title": "巩固学习",
+      "description": "在没有提示的情况下练习书写字母，以巩固技能。获取详细的结果分析并提升书写技巧。"
+    },
+    "compareSection": {
+      "title": "自由模式",
+      "description": "上传您自己的字母图像进行练习。非常适合练习特定字母或自定义字体。"
+    }
+  },
+  "SelectLanguagePage": {
+    "title": "选择语言",
+    "options": {
+      "ua": "乌克兰语",
+      "en": "英语",
+      "jp": "日语",
+      "fr": "法语",
+      "de": "德语",
+      "es": "西班牙语",
+      "ro": "罗马尼亚语",
+      "zh": "中文"
+    },
+    "subtitle": "已选择语言: ",
+    "startButton": "开始"
+  },
+  "comparePage": {
+    "firstElement": {
+      "title": "样本文件"
+    },
+    "secondElement": {
+      "title": "手写文件"
+    },
+    "inputText": "上传",
+    "startButtonNotLoading": "比较",
+    "startButtonLoading": "比较中 ...",
+    "experimental": "实验功能！",
+    "instructions": "拍摄字母照片，然后点击  按钮",
+    "prevArrow": "上一个字母",
+    "nextArrow": "下一个字母",
+    "clearButton": "清除"
+  },
+  "canvasPage": {
+    "sendButtonActive": "发送中...",
+    "sendButtonInactive": "发送",
+    "clearCanvasButton": "清除"
+  },
+  "resultModal": {
+    "title": "您的结果: ",
+    "description": "提示：",
+    "continueButton": "继续"
+  },
+  "404Page": {
+    "title": "此页面在宇宙之外。",
+    "description": "您尝试访问的页面不存在或已移动。请返回我们的主页。",
+    "homeButton": "返回主页"
+  }
+}

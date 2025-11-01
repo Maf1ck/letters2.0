@@ -1,0 +1,70 @@
+{
+  "NavBar": {
+    "list": {
+      "MainPage": "Startseite",
+      "StudyPage": "Lernen",
+      "ReviewPage": "Testen",
+      "ComparePage": "Freier Modus"
+    }
+  },
+  "MainPage": {
+    "title": "Beginnen Sie mit dem Lernen",
+    "startButton": "Starten",
+    "studySection": {
+      "title": "Buchstaben lernen",
+      "description": "Lernen Sie, Buchstaben korrekt zu schreiben, indem Sie den interaktiven Zeichenmodus verwenden. Das System analysiert Ihre Versuche und gibt Feedback zur Schreibgenauigkeit."
+    },
+    "reviewSection": {
+      "title": "Gelerntes festigen",
+      "description": "Üben Sie das Schreiben von Buchstaben ohne Hinweise, um Ihre Fähigkeiten zu stärken. Erhalten Sie eine detaillierte Analyse Ihrer Ergebnisse und verbessern Sie Ihre Schreibtechnik."
+    },
+    "compareSection": {
+      "title": "Freier Modus",
+      "description": "Laden Sie eigene Buchstabenbilder zum Üben hoch. Ideal für die Arbeit mit bestimmten Buchstaben oder speziellen Schriftarten."
+    }
+  },
+  "SelectLanguagePage": {
+    "title": "Sprache wählen",
+    "options": {
+      "ua": "Українська",
+      "en": "English",
+      "jp": "日本語",
+      "fr": "Français",
+      "de": "Deutsch",
+      "es": "Español"
+    },
+    "subtitle": "Ausgewählte Sprache: ",
+    "startButton": "Starten"
+  },
+  "comparePage": {
+    "firstElement": {
+      "title": "Beispieldatei"
+    },
+    "secondElement": {
+      "title": "Handschriftdatei"
+    },
+    "inputText": "Hochladen",
+    "startButtonNotLoading": "Vergleichen",
+    "startButtonLoading": "Vergleiche ...",
+    "experimental": "Experimentelle Funktion!",
+    "instructions": "Machen Sie ein Foto des Buchstabens und drücken Sie dann die Schaltfläche \"Hochladen\"",
+    "prevArrow": "Vorheriger Buchstabe",
+    "nextArrow": "Nächster Buchstabe",
+    "clearButton": "Löschen"
+  },
+  "canvasPage": {
+    "sendButtonActive": "Senden...",
+    "sendButtonInactive": "Senden",
+    "clearCanvasButton": "Löschen"
+  },
+  "resultModal": {
+    "title": "Ihr Ergebnis: ",
+    "description": "Tipps:",
+    "continueButton": "Weiter"
+  },
+  "404Page": {
+    "title": "Diese Seite ist außerhalb des Universums.",
+    "description": "Die Seite, auf die Sie zugreifen möchten, existiert nicht oder wurde verschoben. Versuchen Sie, zurück zu unserer Startseite zu gelangen.",
+    "homeButton": "Zur Startseite zurückkehren"
+  }
+}

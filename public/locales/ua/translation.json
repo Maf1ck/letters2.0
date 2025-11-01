@@ -1,0 +1,80 @@
+{
+  "NavBar": {
+    "list": {
+      "MainPage": "Головна",
+      "StudyPage": "Навчання",
+      "ReviewPage": "Тестування",
+      "ComparePage": "Вільний режим",
+      "QuickMode": "Швидкий режим",
+      "signin": "Log in"
+    }
+  },
+  "MainPage": {
+    "title": "Pysanka",
+    "slogan": "Застосунок, що вчить писати літери",
+    "chooseMode": "Оберіть режим",
+    "startButton": "Почати навчання →",
+    "studySection": {
+      "title": "Навчання",
+      "description": "Навчіться писати літери, обводячи їх за трафаретом"
+    },
+    "reviewSection": {
+      "title": "Тестування",
+      "description": "Навчіться писати літери, обводячи їх за трафаретом"
+    },
+    "compareSection": {
+      "title": "Вільний",
+      "description": "Навчіться писати літери, обводячи їх за трафаретом"
+    },
+    "quickSection": {
+      "title": "Швидкий",
+      "description": "Навчіться писати літери, обводячи їх за трафаретом"
+    }
+  },
+  "SelectLanguagePage": {
+    "title": "Виберіть мову",
+    "options": {
+      "ua": "Українська",
+      "en": "Англійська",
+      "jp": "Японська",
+      "fr": "Французька",
+      "de": "Німецька",
+      "es": "Іспанська",
+      "ro": "Румунська",
+      "zh": "Китайська"
+    },
+    "subtitle": "Вибрана мова: ",
+    "startButton": "Почати"
+  },
+  "comparePage": {
+    "firstElement": {
+      "title": "Файл зі зразком"
+    },
+    "secondElement": {
+      "title": "Файл з письмом"
+    },
+    "inputText": "Завантажити",
+    "startButtonNotLoading": "Порівняти",
+    "startButtonLoading": "Порівнюємо ...",
+    "experimental": "Експериментальна функція!",
+    "instructions": "Зробіть фото літери та натисніть кнопку \"завантажити\"",
+    "prevArrow": "Попередня літера",
+    "nextArrow": "Наступна літера",
+    "clearButton": "Очистити"
+  },
+  "canvasPage": {
+    "sendButtonActive": "Відправляємо ...",
+    "sendButtonInactive": "Надіслати",
+    "clearCanvasButton": "Очистити"
+  },
+  "resultModal": {
+    "title": "Ваш результат: ",
+    "description": "Поради:",
+    "continueButton": "Продовжити"
+  },
+  "404Page": {
+    "title": "Ця сторінка поза всесвітом.",
+    "description": "Сторінка, до якої ви намагаєтеся отримати доступ, не існує або була переміщена. Спробуйте повернутися на нашу домашню сторінку.",
+    "homeButton": "Повернутися на головну"
+  }
+}

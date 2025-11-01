@@ -1,0 +1,67 @@
+{
+  "NavBar": {
+    "list": {
+      "MainPage": "Acasă",
+      "StudyPage": "Învățare",
+      "ReviewPage": "Testare",
+      "ComparePage": "Mod liber"
+    }
+  },
+  "MainPage": {
+    "title": "Începeți învățarea",
+    "startButton": "Începe",
+    "studySection": {
+      "title": "Studiul literelor",
+      "description": "Învățați să scrieți corect literele folosind modul de desen interactiv. Sistemul vă va analiza încercările și vă va oferi feedback privind acuratețea scrisului."
+    },
+    "reviewSection": {
+      "title": "Consolidarea cunoștințelor",
+      "description": "Exersați scrierea literelor fără indicii pentru a consolida abilitățile. Obțineți o analiză detaliată a rezultatelor și îmbunătățiți tehnica de scriere."
+    },
+    "compareSection": {
+      "title": "Mod liber",
+      "description": "Încărcați propriile imagini cu litere pentru a exersa. Ideal pentru litere specifice sau fonturi personalizate."
+    }
+  },
+  "SelectLanguagePage": {
+    "title": "Alegeți limba",
+    "options": {
+      "ua": "Ucraineană",
+      "en": "Engleză",
+      "jp": "Japoneză"
+    },
+    "subtitle": "Limba selectată: ",
+    "startButton": "Începe"
+  },
+  "comparePage": {
+    "firstElement": {
+      "title": "Fișier model"
+    },
+    "secondElement": {
+      "title": "Fișier scris de mână"
+    },
+    "inputText": "Încarcă",
+    "startButtonNotLoading": "Compară",
+    "startButtonLoading": "Se compară ...",
+    "experimental": "Funcție experimentală!",
+    "instructions": "Faceți o fotografie a literei și apoi apăsați butonul \"încarcă\"",
+    "prevArrow": "Litera anterioară",
+    "nextArrow": "Litera următoare",
+    "clearButton": "Șterge"
+  },
+  "canvasPage": {
+    "sendButtonActive": "Se trimite ...",
+    "sendButtonInactive": "Trimite",
+    "clearCanvasButton": "Șterge"
+  },
+  "resultModal": {
+    "title": "Rezultatul tău: ",
+    "description": "Sfaturi:",
+    "continueButton": "Continuă"
+  },
+  "404Page": {
+    "title": "Această pagină este în afara universului.",
+    "description": "Pagina pe care încercați să o accesați nu există sau a fost mutată. Încercați să reveniți la pagina noastră de pornire.",
+    "homeButton": "Întoarce-te la pagina principală"
+  }
+}
