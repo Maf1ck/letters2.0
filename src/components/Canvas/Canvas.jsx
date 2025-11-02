@@ -123,11 +123,13 @@ export default function Canvas() {
 
   const handleArrowClick = (direction) => {
     if (direction === "next") {
+      setLoading(true); // Додаємо лоадер
       canvasRef.current.clearCanvas();
       navigate(
         `/canvas?letter=${nextLetter}&language=${language}&sketch=${sketchOrNot}`,
       );
     } else if (direction === "prev") {
+      setLoading(true); // Додаємо лоадер
       canvasRef.current.clearCanvas();
       navigate(
         `/canvas?letter=${prevLetter}&language=${language}&sketch=${sketchOrNot}`,
@@ -193,7 +195,7 @@ export default function Canvas() {
 
   return (
     <section className="canvas-container">
-      {isLoading && (
+      {(isLoading || loading) && ( // Модифікуємо умову показу лоадера
         <div className="loader-overlay">
           <div className="loader-spinner"></div>
         </div>
@@ -240,7 +242,7 @@ export default function Canvas() {
               width="300px"
               height="300px"
               strokeWidth={7}
-              strokeColor="gray"
+              strokeColor="black"
               backgroundImage={letterImage}
               ref={canvasRef}
             />
@@ -250,7 +252,7 @@ export default function Canvas() {
               width="300px"
               height="300px"
               strokeWidth={7}
-              strokeColor="gray"
+              strokeColor="black"
               ref={canvasRef}
             />
           )}

@@ -4,6 +4,7 @@ import { useTranslation, Trans } from "react-i18next";
 import languagesImage from "../../../assets/languages.svg";
 import question from "../../../assets/question-svgrepo-com.svg";
 import { useNavigate } from "react-router-dom";
+import WelcomeModal from "../../ModalWelcome/ModalWelcome.jsx";
 import "../Layouts.css";
 
 export default function UserLayout() {
@@ -14,6 +15,7 @@ export default function UserLayout() {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const [width, setWidth] = useState(window.innerWidth);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   console.log(width);
 
@@ -35,6 +37,18 @@ export default function UserLayout() {
     };
   }, []);
 
+  useEffect(() => {
+   const hasSeenWelcome = localStorage.getItem("hasSeenWelcome");
+    if (!hasSeenWelcome) {
+      setShowWelcomeModal(true);
+      localStorage.setItem("hasSeenWelcome", "true");
+    }
+    // Показываем модальное окно при каждом заходе/перезагрузке страницы,
+    // если пользователь не авторизован.
+    if (!localStorage.getItem("token")) {      setShowWelcomeModal(true);
+    }
+  }, []);
+
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -49,13 +63,11 @@ export default function UserLayout() {
   function handleDropdownMenuClick() {
     dropdownMenuRef.current.classList.toggle("active");
   }
-  useEffect(() => {
-    if (!token) {
-      alert("Please Login, if you want to start use our App!");
-    }
-  }, []);
   return (
     <main>
+      {showWelcomeModal && (
+        <WelcomeModal onClose={() => setShowWelcomeModal(false)} />
+      )}
       <nav className="navbar">
         <Link className="navbar-logo" to="/">
           Pysanka

@@ -160,7 +160,7 @@ export default function SelectLanguage() {
               <div className="quick-mode-info">
                 <p>
                   <Trans i18nKey="SelectLanguagePage.quickModeInfo">
-                    В цьому режимі вам буде надано 5 випадкових літер для швидкого тестування
+                    В цьому режимі вам буде надано 6 випадкових літер для швидкого тестування
                   </Trans>
                 </p>
                 <button className="syledButton" onClick={handleStart}>
