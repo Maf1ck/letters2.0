@@ -20,3 +20,26 @@ i18n
   });
 
 export default i18n;
+
+// Notify backend whenever the site UI language changes
+i18n.on("languageChanged", (lng) => {
+  try {
+    const token = localStorage.getItem("token");
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    // Fire-and-forget; no blocking/await required for UI responsiveness
+    fetch("https://letters-back.vercel.app/setLanguage", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ language: lng }),
+    }).catch(() => {
+      // silently ignore network errors for this non-critical telemetry
+    });
+  } catch (_) {
+    // ignore
+  }
+});
