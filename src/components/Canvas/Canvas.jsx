@@ -242,7 +242,7 @@ export default function Canvas() {
               width="300px"
               height="300px"
               strokeWidth={7}
-              strokeColor="black"
+              strokeColor="blue"
               backgroundImage={letterImage}
               ref={canvasRef}
             />
@@ -252,7 +252,7 @@ export default function Canvas() {
               width="300px"
               height="300px"
               strokeWidth={7}
-              strokeColor="black"
+              strokeColor="blue"
               ref={canvasRef}
             />
           )}
