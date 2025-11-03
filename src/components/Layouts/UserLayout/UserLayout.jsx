@@ -97,18 +97,29 @@ export default function UserLayout() {
             </li>
           </Link>
           {token ? (
-            <li onClick={() => { toggleMenu(); handleLogout(); }} className="nav-links-item">
+            <li onClick={() => { toggleMenu(); handleLogout(); }} className="nav-links-item mobile-only auth-buttons">
               <Trans i18nKey="NavBar.list.logout">Logout</Trans>
             </li>
           ) : (
-            <Link className="nav-links-item" to="/auth">
-              <li onClick={toggleMenu}>
+            <Link className="nav-links-item mobile-only auth-button" to="/auth">
+              <li onClick={toggleMenu} className="mobile-only">
                 <Trans i18nKey="NavBar.list.signin">Log in</Trans>
               </li>
             </Link>
           )}
         </ul>
         <div className="languages-doc-container">
+          {token ? (
+            <button className="login-button" onClick={handleLogout}>
+              <Trans i18nKey="NavBar.list.logout">Logout</Trans>
+            </button>
+          ) : (
+            <Link to="/auth">
+              <button className="login-button">
+                <Trans i18nKey="NavBar.list.signin">Log in</Trans>
+              </button>
+            </Link>
+          )}
         <div
           className="burger-menu"
           id="burger-menu"

@@ -135,6 +135,11 @@
   transition: all 0.3s ease-in-out;
 }
 
+/* Hidden by default; used to show items only in burger menu */
+.mobile-only {
+  display: none;
+}
+
 .burger-menu {
   display: none;
   flex-direction: column;
@@ -160,10 +165,16 @@
 .burger-menu.active span:nth-child(3) {
   transform: rotate(-45deg) translate(8.5px, -8.5px);
 }
+.auth-buttons {
+  display: none;
+}
 
 @media (max-width: 768px) {
   .burger-menu {
     display: flex;
+  }
+  .login-button {
+    display: none;
   }
 
   .nav-links {
@@ -200,6 +211,11 @@
   .nav-links-item {
     opacity: 1;
     transform: translateX(0);
+  }
+
+  /* Show items flagged for mobile in burger menu */
+  .mobile-only {
+    display: block;
   }
 }
 

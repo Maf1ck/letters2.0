@@ -5,7 +5,8 @@
       "StudyPage": "Навчання",
       "ReviewPage": "Тестування",
       "ComparePage": "Вільний режим",
-      "QuickMode": "Швидкий режим"
+      "QuickMode": "Швидкий режим",
+      "signin": "Log in"
     }
   },
   "MainPage": {

@@ -5,7 +5,9 @@
       "StudyPage": "Lernen",
       "ReviewPage": "Testen",
       "ComparePage": "Freier Modus",
-      "QuickMode": "Schnellmodus"
+      "QuickMode": "Schnellmodus",
+      "signin": "Anmelden",
+      "logout": "Abmelden"
     }
   },
   "MainPage": {
