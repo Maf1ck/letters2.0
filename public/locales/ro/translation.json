@@ -4,7 +4,8 @@
       "MainPage": "Acasă",
       "StudyPage": "Învățare",
       "ReviewPage": "Testare",
-      "ComparePage": "Mod liber"
+      "ComparePage": "Mod liber",
+      "QuickMode": "Mod rapid"
     }
   },
   "MainPage": {

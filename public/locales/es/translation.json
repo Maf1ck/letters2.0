@@ -4,7 +4,8 @@
       "MainPage": "Inicio",
       "StudyPage": "Estudio",
       "ReviewPage": "Prueba",
-      "ComparePage": "Modo libre"
+      "ComparePage": "Modo libre",
+      "QuickMode": "Modo rápido"
     }
   },
   "MainPage": {

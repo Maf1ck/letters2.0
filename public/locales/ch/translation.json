@@ -4,7 +4,8 @@
       "MainPage": "主页",
       "StudyPage": "学习",
       "ReviewPage": "测试",
-      "ComparePage": "自由模式"
+      "ComparePage": "自由模式",
+      "QuickMode": "快速模式"
     }
   },
   "MainPage": {

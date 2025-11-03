@@ -103,19 +103,19 @@ export default function UserLayout() {
               <Trans i18nKey="NavBar.list.QuickMode">Швидкий режим</Trans>
             </li>
           </Link>
-        </ul>
-        <div className="languages-doc-container">
           {token ? (
-            <button className="login-button" onClick={handleLogout}>
-              <Trans i18nKey="NavBar.list.signin">Logout</Trans>
-            </button>
+            <li onClick={() => { toggleMenu(); handleLogout(); }} className="nav-links-item">
+              <Trans i18nKey="NavBar.list.logout">Logout</Trans>
+            </li>
           ) : (
-            <Link to="/auth">
-              <button className="login-button">
+            <Link className="nav-links-item" to="/auth">
+              <li onClick={toggleMenu}>
                 <Trans i18nKey="NavBar.list.signin">Log in</Trans>
-              </button>
+              </li>
             </Link>
           )}
+        </ul>
+        <div className="languages-doc-container">
           <div className="select-language-wrapper" ref={dropdownRef}>
             <div className="dropdown-container">
               <button

@@ -4,7 +4,8 @@
       "MainPage": "ホーム",
       "StudyPage": "学習",
       "ReviewPage": "テスト",
-      "ComparePage": "フリーモード"
+      "ComparePage": "フリーモード",
+      "QuickMode": "クイックモード"
     }
   },
   "MainPage": {
