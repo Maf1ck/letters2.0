@@ -72,16 +72,6 @@ export default function UserLayout() {
         <Link className="navbar-logo" to="/">
           Pysanka
         </Link>
-        <div
-          className="burger-menu"
-          id="burger-menu"
-          ref={burgerMenuRef}
-          onClick={toggleMenu}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
         <ul className="nav-links" id="nav-links" ref={navLinksRef}>
           <Link className="nav-links-item" to="/select-language?sketch=true">
             <li onClick={toggleMenu}>
@@ -116,6 +106,16 @@ export default function UserLayout() {
           )}
         </ul>
         <div className="languages-doc-container">
+        <div
+          className="burger-menu"
+          id="burger-menu"
+          ref={burgerMenuRef}
+          onClick={toggleMenu}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
           <div className="select-language-wrapper" ref={dropdownRef}>
             <div className="dropdown-container">
               <button
