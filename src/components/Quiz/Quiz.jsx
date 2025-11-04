@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import convertSvgToPng from "../utils/convertSvgToPng.js";
 import { useTranslation, Trans } from "react-i18next";
+import { usePDF } from "react-to-pdf";
 import "./Quiz.css";
 
 const TOTAL_LETTERS = 6;
@@ -113,6 +114,15 @@ export default function Quiz() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const canvasRef = useRef(null);
   const timerRef = useRef(null);
+  
+  // Setup PDF generation
+  const { toPDF, targetRef } = usePDF({ 
+    filename: `quiz-results-${language || 'unknown'}-${new Date().toISOString().split('T')[0]}.pdf`,
+    page: {
+      margin: 20,
+      format: 'A4'
+    }
+  });
 
   const getRandomLetters = (allLetters, count) => {
     const shuffled = [...allLetters].sort(() => 0.5 - Math.random());
@@ -199,7 +209,7 @@ export default function Quiz() {
     try {
       // Отримуємо малюнок користувача
       const userPicture = await canvasRef.current.exportImage("png");
-      
+
       // Отримуємо еталонне зображення для порівняння
       const letterImageUrl = await getLetterImage(language, currentLetter);
       if (!letterImageUrl) {
@@ -262,7 +272,7 @@ export default function Quiz() {
         status: null,
       };
       setResults((prev) => [...prev, errorResult]);
-      
+
       if (currentLetterIndex < letters.length - 1) {
         await handleNextLetter();
       } else {
@@ -323,83 +333,83 @@ export default function Quiz() {
     const validResults = sortedResults.filter(r => r && typeof r.percents === 'number' && !isNaN(r.percents));
     const averageScore = validResults.length > 0
       ? Math.round(
-          validResults.reduce((sum, r) => sum + r.percents, 0) /
-            validResults.length,
-        )
+        validResults.reduce((sum, r) => sum + r.percents, 0) /
+        validResults.length,
+      )
       : 0;
-    
+
     // Перевіряємо чи всі результати прийшли
     const allResultsLoaded = sortedResults.every(r => r && typeof r.percents === 'number' && !isNaN(r.percents));
 
     return (
       <section className="quiz-container">
         <div className="quiz-results">
-          <h2 className="quiz-results-title">
-            <Trans i18nKey="quizPage.resultsTitle">Ваші результати</Trans>
-          </h2>
-          
-          {/* Середній бал спочатку */}
-          {validResults.length > 0 && (
-            <div className="quiz-average-card">
-              <div className="quiz-average-label">
-                <Trans i18nKey="quizPage.average">Середній бал</Trans>
-                {!allResultsLoaded && (
-                  <span className="quiz-average-loading-indicator"> ({validResults.length}/{TOTAL_LETTERS})</span>
-                )}
-              </div>
-              <div className="quiz-average-score">{averageScore}%</div>
-            </div>
-          )}
-          
           {validResults.length === 0 && (
             <div className="quiz-loading-message">
               <Trans i18nKey="quizPage.loadingResults">Завантаження результатів...</Trans>
               <div className="loader-spinner"></div>
             </div>
           )}
-          
+
           {sortedResults.length > 0 && (
             <>
+              {/* PDF Content Wrapper */}
+              <div className="pdf-content-wrapper" ref={targetRef}>
+                <div className="pdf-header">
+                  <h2 className="pdf-title">
+                    <Trans i18nKey="quizPage.resultsTitle">Ваші результати</Trans>
+                  </h2>
+                  <div className="pdf-meta">
+                    <span className="pdf-language">{t('quizPage.language')}: {language?.toUpperCase()}</span>
+                    <span className="pdf-date">{new Date().toLocaleDateString()}</span>
+                  </div>
+                </div>
 
-              {/* Результати по літерам */}
-              <div className="results-grid">
-                {sortedResults.map((result, index) => {
-                  // Перевіряємо що результат валідний
-                  const percents = (result && typeof result.percents === 'number' && !isNaN(result.percents)) 
-                    ? result.percents 
-                    : null;
-                  const letter = result?.letter || '?';
-                  const isLoaded = percents !== null;
-                  
-                  return (
-                    <div key={index} className={`result-card ${!isLoaded ? 'result-card-loading' : ''}`}>
-                      <div className="result-card-header">
-                        <span className="result-letter-badge">{letter}</span>
-                        {isLoaded ? (
-                          <span className={`result-percentage-badge ${getScoreClass(percents)}`}>
-                            {percents}%
-                          </span>
-                        ) : (
-                          <span className="result-percentage-badge result-loading">
-                            <div className="mini-loader"></div>
-                          </span>
+                {/* Середній бал для PDF */}
+                {validResults.length > 0 && (
+                  <div className="pdf-average-section">
+                    <div className="pdf-average-label">
+                      <Trans i18nKey="quizPage.average">Середній бал</Trans>
+                    </div>
+                    <div className="pdf-average-score">{averageScore}%</div>
+                  </div>
+                )}
+
+                {/* Результати по літерам */}
+                <div className="pdf-results-grid">
+                  {sortedResults.map((result, index) => {
+                    // Перевіряємо що результат валідний
+                    const percents = (result && typeof result.percents === 'number' && !isNaN(result.percents))
+                      ? result.percents
+                      : null;
+                    const letter = result?.letter || '?';
+                    const isLoaded = percents !== null;
+
+                    return (
+                      <div key={index} className={`pdf-result-card ${!isLoaded ? 'pdf-result-card-loading' : ''}`}>
+                        <div className="pdf-result-header">
+                          <span className="pdf-letter-badge">{letter}</span>
+                          {isLoaded ? (
+                            <span className={`pdf-percentage-badge ${getScoreClass(percents)}`}>
+                              {percents}%
+                            </span>
+                          ) : (
+                            <span className="pdf-percentage-badge pdf-result-loading">
+                              ...
+                            </span>
+                          )}
+                        </div>
+                        {result?.advice && isLoaded && (
+                          <div className="pdf-advice-text">{result.advice}</div>
                         )}
                       </div>
-                      {result?.advice && isLoaded && (
-                        <div className="result-advice-text">{result.advice}</div>
-                      )}
-                      {!isLoaded && (
-                        <div className="result-loading-text">
-                          <Trans i18nKey="quizPage.loadingResult">Завантаження...</Trans>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </>
           )}
-          
+
           <div className="quiz-results-buttons">
             <button
               className="quiz-button quiz-button-primary"
@@ -412,6 +422,13 @@ export default function Quiz() {
               onClick={() => navigate("/")}
             >
               <Trans i18nKey="quizPage.goHome">На головну</Trans>
+            </button>
+            <button 
+              className="quiz-button quiz-button-secondary" 
+              onClick={() => toPDF()}
+              disabled={!allResultsLoaded || isSubmitting}
+            >
+              <Trans i18nKey="quizPage.downloadPdf">Download results (PDF)</Trans>
             </button>
           </div>
         </div>
@@ -475,6 +492,7 @@ export default function Quiz() {
         >
           <Trans i18nKey="quizPage.clear">Очистити</Trans>
         </button>
+
       </div>
     </section>
   );
