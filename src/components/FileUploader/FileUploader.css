@@ -159,3 +159,44 @@
 
 @media (max-width:768px){.file-uploader{border-radius: 8px;}}
 
+/* Еталонна буква */
+.ethalon-letter-container {
+  width: 100%;
+  max-width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f7fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.ethalon-letter-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Прев'ю завантаженого файлу */
+.uploaded-file-preview {
+  width: 100%;
+  max-width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f7fafc;
+  border: 2px solid #87CEEB;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.uploaded-file-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+

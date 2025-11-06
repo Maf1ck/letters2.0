@@ -8,6 +8,7 @@ import arrow from "../../assets/right-arrow-svgrepo-com.svg";
 import audioImage from "../../assets/audio-svgrepo-com.svg";
 import convertSvgToPng from "../utils/convertSvgToPng.js";
 import * as React from "react";
+import "../Canvas/Canvas.css";
 
 export default function FileUploader() {
   const ethalonFileInputRef = useRef(null);
@@ -122,6 +123,7 @@ export default function FileUploader() {
             userImage: userBase64,
             letter: letter,
             language: language,
+            systemLanguage: i18n.language || "ua", // ОБОВ'ЯЗКОВЕ поле для бекенду
           }),
         },
       );
@@ -190,30 +192,58 @@ export default function FileUploader() {
         </div>
       )}
       <ResultModal ref={resultModalRef} result={modalText} advice={advice} />
-      <div className="file-uploader-sections">
-        <div className="file-uploader-section">
-          <h2 className="file-section-title">
-            <Trans i18nKey="comparePage.firstElement.title">Файл зі зразком</Trans>
-          </h2>
-          <label className="file-label">
-            <span className="file-icon">+</span>
-            <span className="file-label-text">
-              <Trans i18nKey="comparePage.inputText">Завантажити</Trans>
-            </span>
-            <input
-              className="file-input"
-              id="sampleFileInput"
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              disabled
+      <div className="canvas-navigation">
+        <div className="nav-arrow-left">
+          <span className="nav-letter">{prevLetter}</span>
+          <button 
+            className="nav-arrow-button"
+            disabled={isLoading || !prevLetter} 
+            onClick={() => handleArrowClick("prev")}
+          >
+            <img
+              src={arrow}
+              alt="arrow"
+              className="arrow-left"
             />
-          </label>
+          </button>
         </div>
+        <div className="canvas-main-letter">{letter}</div>
+        <div className="nav-arrow-right">
+          <button 
+            className="nav-arrow-button"
+            disabled={isLoading || !nextLetter} 
+            onClick={() => handleArrowClick("next")}
+          >
+            <img
+              src={arrow}
+              alt="arrow"
+              className="arrow-right"
+            />
+          </button>
+          <span className="nav-letter">{nextLetter}</span>
+        </div>
+      </div>
+      <div className="file-uploader-sections">
+        {/* Еталонна буква для порівняння */}
+        {letterImage && (
+          <div className="file-uploader-section">
+            <h2 className="file-section-title">
+              <Trans i18nKey="comparePage.ethalonLetter.title">Еталонна буква</Trans>
+            </h2>
+            <div className="ethalon-letter-container">
+              <img 
+                src={letterImage} 
+                alt={`Letter ${letter}`}
+                className="ethalon-letter-image"
+              />
+            </div>
+          </div>
+        )}
 
+        {/* Файл користувача */}
         <div className="file-uploader-section">
           <h2 className="file-section-title">
-            <Trans i18nKey="comparePage.secondElement.title">Файл з письмом</Trans>
+            <Trans i18nKey="comparePage.userFile.title">Ваш файл</Trans>
           </h2>
           <label className="file-label">
             <span className="file-icon">+</span>
@@ -232,13 +262,22 @@ export default function FileUploader() {
             />
           </label>
           {ethalonFile && (
-            <button
-              onClick={handleClearFiles}
-              className="clear-button"
-              id="mefile1-clear-button"
-            >
-              <Trans i18nKey="comparePage.clearButton">Очистити</Trans>
-            </button>
+            <>
+              <div className="uploaded-file-preview">
+                <img 
+                  src={ethalonFile} 
+                  alt="Uploaded file"
+                  className="uploaded-file-image"
+                />
+              </div>
+              <button
+                onClick={handleClearFiles}
+                className="clear-button"
+                id="mefile1-clear-button"
+              >
+                <Trans i18nKey="comparePage.clearButton">Очистити</Trans>
+              </button>
+            </>
           )}
         </div>
       </div>

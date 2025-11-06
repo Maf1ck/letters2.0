@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { useState, useEffect } from "react";
-import { LuPenTool, LuFileText, LuFileCheck, LuTimer } from "react-icons/lu";
+import { LuPenTool, LuFileText, LuFileCheck, LuTimer, LuUpload } from "react-icons/lu";
 import "./MainPage.css";
 
 export default function Main() {
@@ -125,6 +125,31 @@ export default function Main() {
                 return navigate("/auth");
               }
               return navigate("/select-language?sketch=quick");
+            }}
+          >
+            <Trans i18nKey="MainPage.startButton">Почати навчання →</Trans>
+          </button>
+        </div>
+
+        <div className="mode-card">
+          <div className="mode-icon">
+            <LuUpload />
+          </div>
+          <h3 className="mode-card-title">
+            <Trans i18nKey="MainPage.uploadSection.title">Завантажити файл</Trans>
+          </h3>
+          <p className="mode-card-description">
+            <Trans i18nKey="MainPage.uploadSection.description">
+              Завантажте фото своєї букви та порівняйте зі зразком
+            </Trans>
+          </p>
+          <button
+            className="mode-card-button"
+            onClick={() => {
+              if (!loggedIn) {
+                return navigate("/auth");
+              }
+              return navigate("/select-language?sketch=upload");
             }}
           >
             <Trans i18nKey="MainPage.startButton">Почати навчання →</Trans>

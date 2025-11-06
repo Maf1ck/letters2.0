@@ -94,6 +94,10 @@ export default function SelectLanguage() {
         navigate(
           `/file-uploader?language=${selectedLanguage}&letter=${selectedLetter}`,
         );
+      } else if (sketchOrNot === "upload") {
+        navigate(
+          `/file-uploader?language=${selectedLanguage}&letter=${selectedLetter}`,
+        );
       } else {
         navigate(
           `/canvas?language=${selectedLanguage}&letter=${selectedLetter}&sketch=${sketchOrNot}`,
@@ -124,6 +128,8 @@ export default function SelectLanguage() {
         <h1>Studying</h1>
       ) : sketchOrNot === "quick" ? (
         <h1>Quick Mode</h1>
+      ) : sketchOrNot === "upload" ? (
+        <h1>Upload File</h1>
       ) : (
         <h1>Testing</h1>
       )}

@@ -75,6 +75,7 @@ async function sendLetterForEvaluation(token, language, letter, userImage, ethal
           ethalonImage: ethalonImage,
           language: language,
           letter: letter,
+          systemLanguage: i18n.language || "ua"
         }),
       },
     );

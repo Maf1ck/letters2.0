@@ -62,8 +62,9 @@ export default function AuthElement() {
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          if (data.token) {
-            localStorage.setItem("token", data.token);
+          if (data.access_token) {
+            localStorage.setItem("token", data.access_token);
+            localStorage.setItem("refreshToken", data.refresh_token);
             navigate("/");
             window.location.reload(false);
           } else if (data.message === "Invalid password.") {

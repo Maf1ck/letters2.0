@@ -168,6 +168,7 @@ export default function Canvas() {
               ethalonImage: `data:image/png;base64,${ethalonImage}`,
               language: language,
               letter: letter,
+              systemLanguage: i18n.language || "ua" // Додаємо параметр для бекенду
             }),
           },
         );
