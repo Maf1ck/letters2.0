@@ -38,10 +38,8 @@ export default function Canvas() {
     border: "3px solid rgb(184, 184, 184)",
   });
 
-  console.log(advice);
-
   const { t, i18n } = useTranslation();
-  console.log();
+  
   const searchParams = new URLSearchParams(location.search);
   const sketchOrNot = searchParams.get("sketch") === "true";
   const letter = searchParams.get("letter");
@@ -99,10 +97,9 @@ export default function Canvas() {
     })
       .then((res) => res.json())
       .then((data) => {
-        const base64 = data.image; // e.g. base64 string WITHOUT prefix
-        const mimeType = "image/svg+xml"; // change if it's PNG, JPEG, etc.
+        const base64 = data.image;
+        const mimeType = "image/svg+xml";
 
-        // Convert base64 string to binary
         const byteCharacters = atob(base64);
         const byteNumbers = new Array(byteCharacters.length)
           .fill(0)
@@ -123,13 +120,13 @@ export default function Canvas() {
 
   const handleArrowClick = (direction) => {
     if (direction === "next") {
-      setLoading(true); // Додаємо лоадер
+      setLoading(true);
       canvasRef.current.clearCanvas();
       navigate(
         `/canvas?letter=${nextLetter}&language=${language}&sketch=${sketchOrNot}`,
       );
     } else if (direction === "prev") {
-      setLoading(true); // Додаємо лоадер
+      setLoading(true);
       canvasRef.current.clearCanvas();
       navigate(
         `/canvas?letter=${prevLetter}&language=${language}&sketch=${sketchOrNot}`,
@@ -142,19 +139,18 @@ export default function Canvas() {
     setStyles((prevStyles) => {
       return { ...prevStyles, pointerEvents: "none" };
     });
-    console.log(123);
+    
     canvasRef.current
       .exportImage("png")
       .then(async (data) => {
         const userPicture = data;
         const ethalonImage = await convertSvgToPng(letterImage);
-        // console.log(`data:image/png;base64,${ethalonImage}`);
-        console.log(userPicture);
-        // console.log(ethalonImage);
+        
         if (!ethalonImage) {
           console.error("Failed to convert SVG to PNG");
           return;
         }
+        
         const resp = await fetch(
           "https://letters-back.vercel.app/sendImages",
           {
@@ -168,7 +164,7 @@ export default function Canvas() {
               ethalonImage: `data:image/png;base64,${ethalonImage}`,
               language: language,
               letter: letter,
-              systemLanguage: i18n.language || "ua" // Додаємо параметр для бекенду
+              systemLanguage: i18n.language || "ua" // ВИПРАВЛЕНО: додано параметр systemLanguage
             }),
           },
         );
@@ -196,7 +192,7 @@ export default function Canvas() {
 
   return (
     <section className="canvas-container">
-      {(isLoading || loading) && ( // Модифікуємо умову показу лоадера
+      {(isLoading || loading) && (
         <div className="loader-overlay">
           <div className="loader-spinner"></div>
         </div>
