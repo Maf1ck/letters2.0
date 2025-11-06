@@ -5,23 +5,35 @@
       "StudyPage": "Învățare",
       "ReviewPage": "Testare",
       "ComparePage": "Mod liber",
-      "QuickMode": "Mod rapid"
+      "QuickMode": "Mod rapid",
+      "signin": "Conectare",
+      "logout": "Deconectare"
     }
   },
   "MainPage": {
-    "title": "Începeți învățarea",
-    "startButton": "Începe",
+    "title": "Pysanka",
+    "slogan": "O aplicație care te învață să scrii litere",
+    "chooseMode": "Alege un mod",
+    "startButton": "Începe învățarea →",
     "studySection": {
-      "title": "Studiul literelor",
-      "description": "Învățați să scrieți corect literele folosind modul de desen interactiv. Sistemul vă va analiza încercările și vă va oferi feedback privind acuratețea scrisului."
+      "title": "Învățare",
+      "description": "Învață să scrii litere urmărind șabloanele"
     },
     "reviewSection": {
-      "title": "Consolidarea cunoștințelor",
-      "description": "Exersați scrierea literelor fără indicii pentru a consolida abilitățile. Obțineți o analiză detaliată a rezultatelor și îmbunătățiți tehnica de scriere."
+      "title": "Testare",
+      "description": "Testează-ți abilitățile de scriere fără indicii"
     },
     "compareSection": {
       "title": "Mod liber",
-      "description": "Încărcați propriile imagini cu litere pentru a exersa. Ideal pentru litere specifice sau fonturi personalizate."
+      "description": "Desenează litere fără șabloane și primește feedback detaliat"
+    },
+    "quickSection": {
+      "title": "Mod rapid",
+      "description": "Ia un test rapid cu 6 litere aleatorii"
+    },
+    "uploadSection": {
+      "title": "Încarcă fișier",
+      "description": "Încarcă o fotografie a literei tale și compară-o cu exemplul"
     }
   },
   "SelectLanguagePage": {
@@ -29,10 +41,16 @@
     "options": {
       "ua": "Ucraineană",
       "en": "Engleză",
-      "jp": "Japoneză"
+      "jp": "Japoneză",
+      "fr": "Franceză",
+      "de": "Germană",
+      "es": "Spaniolă",
+      "ro": "Română",
+      "zh": "Chineză"
     },
     "subtitle": "Limba selectată: ",
-    "startButton": "Începe"
+    "startButton": "Începe",
+    "quickModeInfo": "În acest mod, vei primi 6 litere aleatorii pentru un test rapid"
   },
   "comparePage": {
     "firstElement": {
@@ -40,6 +58,12 @@
     },
     "secondElement": {
       "title": "Fișier scris de mână"
+    },
+    "ethalonLetter": {
+      "title": "Litera de referință"
+    },
+    "userFile": {
+      "title": "Fișierul tău"
     },
     "inputText": "Încarcă",
     "startButtonNotLoading": "Compară",
@@ -60,7 +84,42 @@
     "description": "Sfaturi:",
     "continueButton": "Continuă"
   },
+  "quizPage": {
+    "progress": "Litera {{current}} din {{total}}",
+    "submit": "Trimite",
+    "submitting": "Se trimite...",
+    "clear": "Șterge",
+    "resultsTitle": "Rezultatele tale",
+    "average": "Scor mediu",
+    "loadingResults": "Se încarcă rezultatele...",
+    "loadingResult": "Se încarcă...",
+    "startAgain": "Începe din nou",
+    "goHome": "Înapoi la pagina principală"
+  },
+  "welcomeModal": {
+    "title": "Bun venit la Pysanka!",
+    "description": "Pentru acces complet la aplicație, te rugăm să te conectezi sau să te înregistrezi.",
+    "loginButton": "Conectare",
+    "laterButton": "Mai târziu"
+  },
+  "authPage": {
+    "signIn": "Conectare",
+    "signUp": "Înregistrare",
+    "email": "Email:",
+    "password": "Parolă:",
+    "confirmPassword": "Confirmă parola:",
+    "name": "Nume:",
+    "age": "Vârstă:",
+    "signInButton": "Conectare",
+    "signUpButton": "Înregistrare",
+    "noAccount": "Nu ai un cont?",
+    "haveAccount": "Ai deja un cont?",
+    "register": "Înregistrează-te",
+    "login": "Conectare",
+    "testUser": "Conectează-te ca utilizator test"
+  },
   "404Page": {
+    "error": "Eroare",
     "title": "Această pagină este în afara universului.",
     "description": "Pagina pe care încercați să o accesați nu există sau a fost mutată. Încercați să reveniți la pagina noastră de pornire.",
     "homeButton": "Întoarce-te la pagina principală"

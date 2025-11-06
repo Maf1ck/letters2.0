@@ -435,12 +435,17 @@ export default function Quiz() {
         </div>
       </div>
 
-      {/* Прогресс літер */}
       <div className="quiz-progress">
-        <Trans i18nKey="quizPage.progress">
-          Літера {currentLetterIndex + 1} з {TOTAL_LETTERS}
-        </Trans>
-      </div>
+  <Trans 
+    i18nKey="quizPage.progress" 
+    values={{ 
+      current: currentLetterIndex + 1, 
+      total: TOTAL_LETTERS 
+    }}
+  >
+    Літера {{current}} з {{total}}
+  </Trans>
+</div>
 
       {/* Поточна літера */}
       <div className="quiz-letter-display">{currentLetter}</div>

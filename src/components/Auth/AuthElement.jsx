@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Trans } from "react-i18next";
 import "./AuthElement.css";
 
 export default function AuthElement() {
@@ -82,7 +83,11 @@ export default function AuthElement() {
 
   return (
     <div className="auth-container">
-      {isSignIn ? <h1>Sign in</h1> : <h1>Sign up</h1>}
+      {isSignIn ? (
+        <h1><Trans i18nKey="authPage.signIn">Вхід</Trans></h1>
+      ) : (
+        <h1><Trans i18nKey="authPage.signUp">Реєстрація</Trans></h1>
+      )}
       {isSignIn ? (
         <form
           ref={formRef}
@@ -90,7 +95,9 @@ export default function AuthElement() {
           onSubmit={(e) => handleSubmit(e, false)}
         >
           <div className="form-group">
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="email">
+              <Trans i18nKey="authPage.email">Email:</Trans>
+            </label>
             <input
               type="email"
               id="email"
@@ -101,7 +108,9 @@ export default function AuthElement() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password:</label>
+            <label htmlFor="password">
+              <Trans i18nKey="authPage.password">Пароль:</Trans>
+            </label>
             <input
               type="password"
               id="password"
@@ -112,15 +121,15 @@ export default function AuthElement() {
           </div>
 
           <button type="submit" className="submit-btn">
-            Sign in
+            <Trans i18nKey="authPage.signInButton">Увійти</Trans>
           </button>
           <p className="toggle-text">
-            Don't have an account?
+            <Trans i18nKey="authPage.noAccount">Немає облікового запису?</Trans>{" "}
             <a
               style={{ cursor: "pointer" }}
               onClick={() => setIsSignIn(!isSignIn)}
             >
-              Register
+              <Trans i18nKey="authPage.register">Реєстрація</Trans>
             </a>
           </p>
           <button
@@ -128,7 +137,7 @@ export default function AuthElement() {
             className="submit-btn"
             onClick={(e) => handleSubmit(e, true)}
           >
-            <p>Login as test user</p>
+            <Trans i18nKey="authPage.testUser">Увійти як тестовий користувач</Trans>
           </button>
         </form>
       ) : (
@@ -139,7 +148,9 @@ export default function AuthElement() {
           onSubmit={(e) => handleSubmit(e, false)}
         >
           <div className="form-group">
-            <label htmlFor="name">Name:</label>
+            <label htmlFor="name">
+              <Trans i18nKey="authPage.name">Ім'я:</Trans>
+            </label>
             <input
               type="text"
               id="name"
@@ -150,7 +161,9 @@ export default function AuthElement() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="email">
+              <Trans i18nKey="authPage.email">Email:</Trans>
+            </label>
             <input
               type="email"
               id="email"
@@ -161,7 +174,9 @@ export default function AuthElement() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="age">Age:</label>
+            <label htmlFor="age">
+              <Trans i18nKey="authPage.age">Вік:</Trans>
+            </label>
             <input
               type="number"
               id="age"
@@ -174,7 +189,9 @@ export default function AuthElement() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password:</label>
+            <label htmlFor="password">
+              <Trans i18nKey="authPage.password">Пароль:</Trans>
+            </label>
             <input
               type="password"
               id="password"
@@ -185,7 +202,9 @@ export default function AuthElement() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password:</label>
+            <label htmlFor="confirmPassword">
+              <Trans i18nKey="authPage.confirmPassword">Підтвердіть пароль:</Trans>
+            </label>
             <input
               type="password"
               id="confirmPassword"
@@ -196,16 +215,16 @@ export default function AuthElement() {
           </div>
 
           <button type="submit" className="submit-btn">
-            Sign Up
+            <Trans i18nKey="authPage.signUpButton">Зареєструватися</Trans>
           </button>
 
           <p className="toggle-text">
-            Already have an account?
+            <Trans i18nKey="authPage.haveAccount">Вже є обліковий запис?</Trans>{" "}
             <a
               style={{ cursor: "pointer" }}
               onClick={() => setIsSignIn(!isSignIn)}
             >
-              Login
+              <Trans i18nKey="authPage.login">Увійти</Trans>
             </a>
           </p>
           <button
@@ -213,7 +232,7 @@ export default function AuthElement() {
             className="submit-btn"
             onClick={(e) => handleSubmit(e, true)}
           >
-            <p>Login as test user</p>
+            <Trans i18nKey="authPage.testUser">Увійти як тестовий користувач</Trans>
           </button>
         </form>
       )}

@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Trans } from "react-i18next";
 import "./ModalWelcome.css";
 
 export default function ModalWelcome({ onClose }) {
@@ -13,10 +14,16 @@ export default function ModalWelcome({ onClose }) {
   return (
     <dialog ref={modalRef} className="welcome-modal">
       <div className="welcome-content">
-        <h2>Ласкаво просимо до Pysanka!</h2>
+        <h2>
+          <Trans i18nKey="welcomeModal.title">
+            Ласкаво просимо до Pysanka!
+          </Trans>
+        </h2>
         <p>
-          Для повноцінного використання додатку, будь ласка, увійдіть в систему
-          або зареєструйтеся.
+          <Trans i18nKey="welcomeModal.description">
+            Для повноцінного використання додатку, будь ласка, увійдіть в систему
+            або зареєструйтеся.
+          </Trans>
         </p>
         <div className="welcome-buttons">
           <button
@@ -26,10 +33,10 @@ export default function ModalWelcome({ onClose }) {
               onClose();
             }}
           >
-            Увійти
+            <Trans i18nKey="welcomeModal.loginButton">Увійти</Trans>
           </button>
           <button className="welcome-button later-btn" onClick={onClose}>
-            Пізніше
+            <Trans i18nKey="welcomeModal.laterButton">Пізніше</Trans>
           </button>
         </div>
       </div>

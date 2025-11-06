@@ -6,7 +6,8 @@
       "ReviewPage": "Тестування",
       "ComparePage": "Вільний режим",
       "QuickMode": "Швидкий режим",
-      "signin": "Log in"
+      "signin": "Увійти",
+      "logout": "Вийти"
     }
   },
   "MainPage": {
@@ -20,15 +21,19 @@
     },
     "reviewSection": {
       "title": "Тестування",
-      "description": "Навчіться писати літери, обводячи їх за трафаретом"
+      "description": "Перевірте свої навички письма без підказок"
     },
     "compareSection": {
-      "title": "Вільний",
-      "description": "Навчіться писати літери, обводячи їх за трафаретом"
+      "title": "Вільний режим",
+      "description": "Малюйте літери без трафарету і отримуйте детальну оцінку"
     },
     "quickSection": {
-      "title": "Швидкий",
-      "description": "Навчіться писати літери, обводячи їх за трафаретом"
+      "title": "Швидкий режим",
+      "description": "Пройдіть швидкий тест з 6 випадкових літер"
+    },
+    "uploadSection": {
+      "title": "Завантажити файл",
+      "description": "Завантажте фото своєї букви та порівняйте зі зразком"
     }
   },
   "SelectLanguagePage": {
@@ -44,7 +49,8 @@
       "zh": "Китайська"
     },
     "subtitle": "Вибрана мова: ",
-    "startButton": "Почати"
+    "startButton": "Почати",
+    "quickModeInfo": "В цьому режимі вам буде надано 6 випадкових літер для швидкого тестування"
   },
   "comparePage": {
     "firstElement": {
@@ -52,6 +58,12 @@
     },
     "secondElement": {
       "title": "Файл з письмом"
+    },
+    "ethalonLetter": {
+      "title": "Еталонна буква"
+    },
+    "userFile": {
+      "title": "Ваш файл"
     },
     "inputText": "Завантажити",
     "startButtonNotLoading": "Порівняти",
@@ -72,7 +84,42 @@
     "description": "Поради:",
     "continueButton": "Продовжити"
   },
+  "quizPage": {
+    "progress": "Літера {{current}} з {{total}}",
+    "submit": "Відправити",
+    "submitting": "Відправляємо...",
+    "clear": "Очистити",
+    "resultsTitle": "Ваші результати",
+    "average": "Середній бал",
+    "loadingResults": "Завантаження результатів...",
+    "loadingResult": "Завантаження...",
+    "startAgain": "Почати знову",
+    "goHome": "На головну"
+  },
+  "welcomeModal": {
+    "title": "Ласкаво просимо до Pysanka!",
+    "description": "Для повноцінного використання додатку, будь ласка, увійдіть в систему або зареєструйтеся.",
+    "loginButton": "Увійти",
+    "laterButton": "Пізніше"
+  },
+  "authPage": {
+    "signIn": "Вхід",
+    "signUp": "Реєстрація",
+    "email": "Email:",
+    "password": "Пароль:",
+    "confirmPassword": "Підтвердіть пароль:",
+    "name": "Ім'я:",
+    "age": "Вік:",
+    "signInButton": "Увійти",
+    "signUpButton": "Зареєструватися",
+    "noAccount": "Немає облікового запису?",
+    "haveAccount": "Вже є обліковий запис?",
+    "register": "Реєстрація",
+    "login": "Увійти",
+    "testUser": "Увійти як тестовий користувач"
+  },
   "404Page": {
+    "error": "Помилка",
     "title": "Ця сторінка поза всесвітом.",
     "description": "Сторінка, до якої ви намагаєтеся отримати доступ, не існує або була переміщена. Спробуйте повернутися на нашу домашню сторінку.",
     "homeButton": "Повернутися на головну"
