@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ReactSketchCanvas } from "react-sketch-canvas";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import convertSvgToPng from "../utils/convertSvgToPng.js";
 import { useTranslation, Trans } from "react-i18next";
@@ -60,7 +60,7 @@ async function getLetterImage(language, letter) {
   }
 }
 
-async function sendLetterForEvaluation(token, language, letter, userImage, ethalonImage) {
+async function sendLetterForEvaluation(token, language, letter, userImage, ethalonImage, systemLanguage) {
   try {
     const response = await fetch(
       "https://letters-back.vercel.app/sendImages",
@@ -75,7 +75,7 @@ async function sendLetterForEvaluation(token, language, letter, userImage, ethal
           ethalonImage: ethalonImage,
           language: language,
           letter: letter,
-          systemLanguage: i18n.language || "ua"
+          systemLanguage: systemLanguage
         }),
       },
     );
@@ -112,6 +112,7 @@ export default function Quiz() {
   const [isLoading, setIsLoading] = useState(true);
   const [isQuizFinished, setIsQuizFinished] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false); // новий стан для переходу між літерами
   const canvasRef = useRef(null);
   const timerRef = useRef(null);
 
@@ -119,6 +120,32 @@ export default function Quiz() {
     const shuffled = [...allLetters].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count).map((l) => l.letter);
   };
+
+  // ВИПРАВЛЕНО: Винесли handleNextLetter в useCallback перед useEffect
+  const handleNextLetter = useCallback(async () => {
+    setIsTransitioning(true); // показуємо лоадер
+    
+    if (currentLetterIndex >= letters.length - 1) {
+      // Остання літера - завершуємо квіз
+      setIsQuizFinished(true);
+      setIsTransitioning(false);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+      return;
+    }
+
+    // Невелика затримка для плавності
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    // Переходимо до наступної літери
+    setCurrentLetterIndex((prev) => prev + 1);
+    if (canvasRef.current) {
+      canvasRef.current.clearCanvas();
+    }
+    
+    setIsTransitioning(false); // ховаємо лоадер
+  }, [currentLetterIndex, letters.length]);
 
   useEffect(() => {
     if (!language) {
@@ -143,7 +170,7 @@ export default function Quiz() {
     initializeQuiz();
   }, [language, navigate]);
 
-  // Таймер
+  // Таймер - тепер handleNextLetter в залежностях
   useEffect(() => {
     if (isLoading || isQuizFinished || isSubmitting) return;
 
@@ -163,7 +190,7 @@ export default function Quiz() {
         clearInterval(timerRef.current);
       }
     };
-  }, [currentLetterIndex, isLoading, isQuizFinished, isSubmitting]);
+  }, [currentLetterIndex, isLoading, isQuizFinished, isSubmitting, handleNextLetter]);
 
   // Оновлюємо таймер при зміні поточної літери
   useEffect(() => {
@@ -171,23 +198,6 @@ export default function Quiz() {
       setTimeLeft(TIME_PER_LETTER);
     }
   }, [currentLetterIndex, letters]);
-
-  const handleNextLetter = async () => {
-    if (currentLetterIndex >= letters.length - 1) {
-      // Остання літера - завершуємо квіз
-      setIsQuizFinished(true);
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-      return;
-    }
-
-    // Переходимо до наступної літери
-    setCurrentLetterIndex((prev) => prev + 1);
-    if (canvasRef.current) {
-      canvasRef.current.clearCanvas();
-    }
-  };
 
   const handleSubmit = async () => {
     if (isSubmitting) return;
@@ -216,6 +226,7 @@ export default function Quiz() {
         currentLetter,
         userPicture,
         ethalonImage,
+        i18n.language || "ua"
       ).then((result) => {
         // Перевіряємо що результат валідний перед додаванням
         if (result && typeof result.percents === 'number' && !isNaN(result.percents)) {
@@ -250,7 +261,10 @@ export default function Quiz() {
         if (timerRef.current) {
           clearInterval(timerRef.current);
         }
+        setIsTransitioning(true); // показуємо лоадер перед завершенням
+        await new Promise(resolve => setTimeout(resolve, 500));
         setIsQuizFinished(true);
+        setIsTransitioning(false);
       }
     } catch (e) {
       console.error(e);
@@ -271,7 +285,10 @@ export default function Quiz() {
         if (timerRef.current) {
           clearInterval(timerRef.current);
         }
+        setIsTransitioning(true);
+        await new Promise(resolve => setTimeout(resolve, 500));
         setIsQuizFinished(true);
+        setIsTransitioning(false);
       }
     } finally {
       setIsSubmitting(false);
@@ -361,7 +378,6 @@ export default function Quiz() {
           
           {sortedResults.length > 0 && (
             <>
-
               {/* Результати по літерам */}
               <div className="results-grid">
                 {sortedResults.map((result, index) => {
@@ -424,6 +440,13 @@ export default function Quiz() {
 
   return (
     <section className="quiz-container">
+      {/* Лоадер для переходів між літерами та відправки */}
+      {(isSubmitting || isTransitioning) && (
+        <div className="loader-overlay">
+          <div className="loader-spinner"></div>
+        </div>
+      )}
+      
       {/* Прогресс-бар часу */}
       <div className="quiz-timer-bar">
         <div
@@ -436,16 +459,16 @@ export default function Quiz() {
       </div>
 
       <div className="quiz-progress">
-  <Trans 
-    i18nKey="quizPage.progress" 
-    values={{ 
-      current: currentLetterIndex + 1, 
-      total: TOTAL_LETTERS 
-    }}
-  >
-    Літера {{current}} з {{total}}
-  </Trans>
-</div>
+        <Trans 
+          i18nKey="quizPage.progress" 
+          values={{ 
+            current: currentLetterIndex + 1, 
+            total: TOTAL_LETTERS 
+          }}
+        >
+          Літера {{current: currentLetterIndex + 1}} з {{total: TOTAL_LETTERS}}
+        </Trans>
+      </div>
 
       {/* Поточна літера */}
       <div className="quiz-letter-display">{currentLetter}</div>
@@ -456,7 +479,7 @@ export default function Quiz() {
           width="300px"
           height="300px"
           strokeWidth={7}
-          strokeColor="gray"
+          strokeColor="blue"
           ref={canvasRef}
         />
       </div>
@@ -485,4 +508,3 @@ export default function Quiz() {
     </section>
   );
 }
-
