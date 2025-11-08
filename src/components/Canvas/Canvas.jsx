@@ -37,6 +37,9 @@ export default function Canvas() {
   const [styles, setStyles] = useState({
     border: "3px solid rgb(184, 184, 184)",
   });
+  const [userLanguage, setUserLanguage] = useState(
+    localStorage.getItem('i18nextLng')
+  );
 
   const { t, i18n } = useTranslation();
   
@@ -44,6 +47,21 @@ export default function Canvas() {
   const sketchOrNot = searchParams.get("sketch") === "true";
   const letter = searchParams.get("letter");
   const language = searchParams.get("language");
+
+  // Відстежуємо зміни мови
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      const currentLang = localStorage.getItem('i18nextLng');
+      setUserLanguage(currentLang);
+    };
+    
+    handleLanguageChange();
+    window.addEventListener('storage', handleLanguageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleLanguageChange);
+    };
+  }, []);
 
   let sendButton = (
     <button
@@ -164,7 +182,7 @@ export default function Canvas() {
               ethalonImage: `data:image/png;base64,${ethalonImage}`,
               language: language,
               letter: letter,
-              systemLanguage: i18n.language || "ua" // ВИПРАВЛЕНО: додано параметр systemLanguage
+              systemLanguage: userLanguage
             }),
           },
         );

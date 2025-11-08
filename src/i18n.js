@@ -21,7 +21,6 @@ i18n
 
 export default i18n;
 
-// Notify backend whenever the site UI language changes
 // i18n.on("languageChanged", (lng) => {
 //   try {
 //     const token = localStorage.getItem("token");

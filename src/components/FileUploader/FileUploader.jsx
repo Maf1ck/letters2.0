@@ -23,6 +23,9 @@ export default function FileUploader() {
   const [base64Ethalon, setBase64Ethalon] = useState(null);
   const [nextLetter, setNextLetter] = useState(null);
   const [prevLetter, setPrevLetter] = useState(null);
+  const [userLanguage, setUserLanguage] = useState(
+    localStorage.getItem('i18nextLng') || 'en'
+  );
   const { t, i18n } = useTranslation();
   const token = localStorage.getItem("token");
   const searchParams = new URLSearchParams(location.search);
@@ -32,6 +35,22 @@ export default function FileUploader() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Відстежуємо зміни мови
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      const currentLang = localStorage.getItem('i18nextLng') || 'en';
+      setUserLanguage(currentLang);
+    };
+    
+    handleLanguageChange();
+    window.addEventListener('storage', handleLanguageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleLanguageChange);
+    };
+  }, []);
+
   useEffect(() => {
     if (letter === null || language === null || !letter || !language) {
       return navigate(`/select-language?sketch=free`);
@@ -123,7 +142,7 @@ export default function FileUploader() {
             userImage: userBase64,
             letter: letter,
             language: language,
-            systemLanguage: i18n.language || "ua", // ОБОВ'ЯЗКОВЕ поле для бекенду
+            systemLanguage: userLanguage,
           }),
         },
       );
