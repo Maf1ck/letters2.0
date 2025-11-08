@@ -63,7 +63,7 @@ async function getLetterImage(language, letter) {
 async function sendLetterForEvaluation(token, language, letter, userImage, ethalonImage, systemLanguage) {
   try {
     const response = await fetch(
-      "https://letters-back.vercel.app/sendImages",
+      "https://letters-back.vercel.app/letter/quiz",
       {
         headers: {
           "Content-Type": "application/json",
