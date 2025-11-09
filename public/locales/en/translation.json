@@ -123,5 +123,19 @@
     "title": "This page is outside of the universe.",
     "description": "The page you are trying to access doesn't exist or has been moved. Try going back to our homepage.",
     "homeButton": "Go to home"
+  },
+  "quizPage": {
+    "resultsTitle": "Your Results",
+    "average": "Average Score",
+    "language": "Language",
+    "loadingResults": "Loading results...",
+    "loadingResult": "Loading...",
+    "startAgain": "Start Again",
+    "goHome": "Go Home",
+    "downloadPdf": "Download results (PDF)",
+    "progress": "Letter {{currentLetterIndex}} of {{TOTAL_LETTERS}}",
+    "submitting": "Submitting...",
+    "submit": "Submit",
+    "clear": "Clear"
   }
 }
