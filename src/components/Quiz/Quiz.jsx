@@ -83,8 +83,8 @@ async function sendLetterForEvaluation(token, language, letter, userImage, ethal
     return {
       letter: letter,
       percents: data.percents,
-      advice: data.result?.advice || "",
-      status: data.result?.status || null,
+      advice: data.advice || "",
+      status: data.status || null,
     };
   } catch (e) {
     console.error(e);
