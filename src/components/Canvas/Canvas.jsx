@@ -243,6 +243,7 @@ export default function Canvas() {
               alt="arrow"
               className="arrow-right"
             />
+            <p>Test</p>
           </button>
           <span className="nav-letter">{nextLetter}</span>
         </div>
