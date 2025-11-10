@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ResultModal from "../ResultModal/ResultModal.jsx";
 import convertSvgToPng from "../utils/convertSvgToPng.js";
 import arrow from "../../assets/right-arrow-svgrepo-com.svg";
-import audioImage from "../../assets/audio-svgrepo-com.svg";
 import { useTranslation, Trans } from "react-i18next";
 import "./Canvas.css";
 
@@ -18,6 +17,35 @@ const STATUS = {
   AVERAGE: "average",
   BAD: "bad",
   NOT_DONE: null,
+};
+
+// Функція для озвучування букви
+const speakLetter = (letter, language) => {
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(letter);
+    
+    // Мапінг мов для SpeechSynthesis
+    const langMap = {
+      'ua': 'uk-UA',
+      'en': 'en-US',
+      'jp': 'ja-JP',
+      'ro': 'ro-RO',
+      'ch': 'zh-CN',
+      'fr': 'fr-FR',
+      'es': 'es-ES',
+      'de': 'de-DE'
+    };
+    
+    utterance.lang = langMap[language] || 'en-US';
+    utterance.rate = 0.8;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  } else {
+    alert('Ваш браузер не підтримує озвучування тексту');
+  }
 };
 
 export default function Canvas() {
@@ -48,7 +76,6 @@ export default function Canvas() {
   const letter = searchParams.get("letter");
   const language = searchParams.get("language");
 
-  // Відстежуємо зміни мови
   useEffect(() => {
     const handleLanguageChange = () => {
       const currentLang = localStorage.getItem('i18nextLng');
@@ -250,8 +277,10 @@ export default function Canvas() {
       <div className="canvas-word-to-speach-container">
         <button
           className="canvas-word-to-speach-button"
-        >
-          <Trans i18nKey="canvasPage.wordToSpeachButton">Як звучить буква?</Trans>
+          onClick={() => speakLetter(letter, language)}
+          disabled={isLoading}
+          title="Озвучити букву"
+        > <Trans i18nKey="canvasPage.wordToSpeachButton">Як звучить буква?</Trans>
         </button>
       </div>
       {loading ? (
