@@ -8,36 +8,7 @@ import { usePDF } from "react-to-pdf";
 import "./Quiz.css";
 
 const TOTAL_LETTERS = 6;
-const TIME_PER_LETTER = 20;
-
-// Функція для озвучування букви
-const speakLetter = (letter, language) => {
-  if ('speechSynthesis' in window) {
-    const utterance = new SpeechSynthesisUtterance(letter);
-    
-    // Мапінг мов для SpeechSynthesis
-    const langMap = {
-      'ua': 'uk-UA',
-      'en': 'en-US',
-      'jp': 'ja-JP',
-      'ro': 'ro-RO',
-      'ch': 'zh-CN',
-      'fr': 'fr-FR',
-      'es': 'es-ES',
-      'de': 'de-DE'
-    };
-    
-    utterance.lang = langMap[language] || 'en-US';
-    utterance.rate = 0.8; // Трохи повільніше для кращого сприйняття
-    utterance.pitch = 1;
-    utterance.volume = 1;
-    
-    window.speechSynthesis.cancel(); // Зупиняємо попереднє озвучування
-    window.speechSynthesis.speak(utterance);
-  } else {
-    alert('Ваш браузер не підтримує озвучування тексту');
-  }
-};
+const TIME_PER_LETTER = 20; // секунд на кожну літеру
 
 async function getLetters(language) {
   try {
@@ -149,6 +120,7 @@ export default function Quiz() {
   const canvasRef = useRef(null);
   const timerRef = useRef(null);
   
+  // Setup PDF generation
   const { toPDF, targetRef } = usePDF({ 
     filename: `quiz-results-${language || 'unknown'}-${new Date().toISOString().split('T')[0]}.pdf`,
     page: {
@@ -243,6 +215,8 @@ export default function Quiz() {
 
     try {
       const userPicture = await canvasRef.current.exportImage("png");
+
+      // Отримуємо еталонне зображення для порівняння
       const letterImageUrl = await getLetterImage(language, currentLetter);
       if (!letterImageUrl) {
         throw new Error("Failed to get letter image");
@@ -250,6 +224,7 @@ export default function Quiz() {
       const ethalonImageBase64 = await convertSvgToPng(letterImageUrl);
       const ethalonImage = `data:image/png;base64,${ethalonImageBase64}`;
 
+      // Додаємо затримку перед відправкою (імітація обробки)
       await new Promise(resolve => setTimeout(resolve, 800));
 
       sendLetterForEvaluation(
@@ -282,6 +257,7 @@ export default function Quiz() {
         setResults((prev) => [...prev, errorResult]);
       });
 
+      // Додаємо затримку перед переходом до наступної літери
       await new Promise(resolve => setTimeout(resolve, 500));
 
       if (currentLetterIndex < letters.length - 1) {
@@ -358,6 +334,7 @@ export default function Quiz() {
     });
 
     const sortedResults = [...allResults];
+
     const validResults = sortedResults.filter(r => r && typeof r.percents === 'number' && !isNaN(r.percents));
     const averageScore = validResults.length > 0
       ? Math.round(
@@ -366,6 +343,7 @@ export default function Quiz() {
       )
       : 0;
 
+    // Перевіряємо чи всі результати прийшли
     const allResultsLoaded = sortedResults.every(r => r && typeof r.percents === 'number' && !isNaN(r.percents));
 
     return (
@@ -380,6 +358,7 @@ export default function Quiz() {
 
           {sortedResults.length > 0 && (
             <>
+              {/* PDF Content Wrapper */}
               <div className="pdf-content-wrapper" ref={targetRef}>
                 <div className="pdf-header">
                   <h2 className="pdf-title">
@@ -391,6 +370,7 @@ export default function Quiz() {
                   </div>
                 </div>
 
+                {/* Середній бал для PDF */}
                 {validResults.length > 0 && (
                   <div className="pdf-average-section">
                     <div className="pdf-average-label">
@@ -400,8 +380,10 @@ export default function Quiz() {
                   </div>
                 )}
 
+                {/* Результати по літерам */}
                 <div className="pdf-results-grid">
                   {sortedResults.map((result, index) => {
+                    // Перевіряємо що результат валідний
                     const percents = (result && typeof result.percents === 'number' && !isNaN(result.percents))
                       ? result.percents
                       : null;
@@ -451,7 +433,7 @@ export default function Quiz() {
               onClick={() => toPDF()}
               disabled={!allResultsLoaded || isSubmitting}
             >
-              <Trans i18nKey="quizPage.downloadPdf">Завантажити PDF</Trans>
+              <Trans i18nKey="quizPage.downloadPdf">Download results (PDF)</Trans>
             </button>
           </div>
         </div>
@@ -491,17 +473,7 @@ export default function Quiz() {
         </Trans>
       </div>
 
-      {/* <div className="quiz-letter-display-wrapper">
-        <div className="quiz-letter-display">{currentLetter}</div>
-        <button
-          className="quiz-speak-button"
-          onClick={() => speakLetter(currentLetter, language)}
-          disabled={isSubmitting}
-          title="Озвучити букву"
-        >
-          🔊
-        </button>
-      </div> */}
+      <div className="quiz-letter-display">{currentLetter}</div>
 
       <div className="quiz-canvas-wrapper">
         <ReactSketchCanvas
@@ -532,6 +504,7 @@ export default function Quiz() {
         >
           <Trans i18nKey="quizPage.clear">Очистити</Trans>
         </button>
+
       </div>
     </section>
   );
