@@ -274,7 +274,7 @@ export default function Canvas() {
           <span className="nav-letter">{nextLetter}</span>
         </div>
       </div>
-      <div className="canvas-word-to-speach-container">
+      {/* <div className="canvas-word-to-speach-container">
         <button
           className="canvas-word-to-speach-button"
           onClick={() => speakLetter(letter, language)}
@@ -282,7 +282,7 @@ export default function Canvas() {
           title="Озвучити букву"
         > <Trans i18nKey="canvasPage.wordToSpeachButton">Як звучить буква?</Trans>
         </button>
-      </div>
+      </div> */}
       {loading ? (
         <p>Loading...</p>
       ) : (

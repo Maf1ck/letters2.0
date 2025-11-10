@@ -491,7 +491,7 @@ export default function Quiz() {
         </Trans>
       </div>
 
-      <div className="quiz-letter-display-wrapper">
+      {/* <div className="quiz-letter-display-wrapper">
         <div className="quiz-letter-display">{currentLetter}</div>
         <button
           className="quiz-speak-button"
@@ -501,7 +501,7 @@ export default function Quiz() {
         >
           🔊
         </button>
-      </div>
+      </div> */}
 
       <div className="quiz-canvas-wrapper">
         <ReactSketchCanvas
