@@ -21,7 +21,7 @@ export default function Main() {
   return (
     <section className="main-page">
       <h1 className="main-page-title">
-        <Trans i18nKey="MainPage.title">Pysanka</Trans>
+        <Trans i18nKey="MainPage.title">Lettera</Trans>
       </h1>
       <p className="main-page-slogan">
         <Trans i18nKey="MainPage.slogan">Застосунок, що вчить писати літери</Trans>
