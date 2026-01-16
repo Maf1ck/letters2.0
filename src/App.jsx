@@ -28,7 +28,7 @@ export default function App() {
         body: JSON.stringify({
           email: "test@test.com",
           password: "1234",
-        })),
+        }))
       setIsLoggedIn(false);
       setIsChecking(false);
       return;
