@@ -14,11 +14,21 @@ export default function App() {
   const [isLogedIn, setIsLoggedIn] = useState(null); // null = перевірка, true/false = результат
   const [isChecking, setIsChecking] = useState(true); // новий стан для відстеження перевірки
 
-  useEffect(() => {
+  useEffect(async () => {
     const token = localStorage.getItem("token");
     
     // Якщо токена немає взагалі - одразу встановлюємо false
     if (!token) {
+      await fetch("https://letters-back.vercel.app/signin", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          email: "test@test.com",
+          password: "1234",
+        })),
       setIsLoggedIn(false);
       setIsChecking(false);
       return;
