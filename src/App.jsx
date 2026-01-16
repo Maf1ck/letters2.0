@@ -5,62 +5,71 @@ import MainPage from "./components/MainPage/MainPage.jsx";
 import FileUploader from "./components/FileUploader/FileUploader.jsx";
 import SelectLanguage from "./components/SelectLanguage/SelectLanguage.jsx";
 import AuthElement from "./components/Auth/AuthElement.jsx";
-import GuseLayout from "./components/Layouts/GuestLayout/GuestLayout.jsx";
+import GuestLayout from "./components/Layouts/GuestLayout/GuestLayout.jsx";
 import NotFound from "./components/404/404.jsx";
 import Quiz from "./components/Quiz/Quiz.jsx";
 import { useEffect, useState } from "react";
 
 export default function App() {
-  const [isLogedIn, setIsLoggedIn] = useState(null); // null = перевірка, true/false = результат
+  const [isLoggedIn, setIsLoggedIn] = useState(null); // null = перевірка, true/false = результат
   const [isChecking, setIsChecking] = useState(true); // новий стан для відстеження перевірки
 
-  useEffect(async () => {
-    const token = localStorage.getItem("token");
-    
-    // Якщо токена немає взагалі - одразу встановлюємо false
-    if (!token) {
-      await fetch("https://letters-back.vercel.app/signin", {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        method: "POST",
-        body: JSON.stringify({
-          email: "test@test.com",
-          password: "1234",
-        }))
-      setIsLoggedIn(false);
-      setIsChecking(false);
-      return;
-    }
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem("token");
 
-    // Перевіряємо токен на сервері
-    fetch("https://letters-back.vercel.app/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message === "Authenticated") {
-          setIsLoggedIn(true);
-        } else {
+      // Якщо токена немає взагалі - одразу встановлюємо false
+      if (!token) {
+        try {
+          await fetch("https://letters-back.vercel.app/signin", {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+            method: "POST",
+            body: JSON.stringify({
+              email: "test@test.com",
+              password: "1234",
+            }),
+          });
+        } catch (e) {
+          console.error("Auto-signin failed:", e);
+        }
+        setIsLoggedIn(false);
+        setIsChecking(false);
+        return;
+      }
+
+      // Перевіряємо токен на сервері
+      fetch("https://letters-back.vercel.app/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.message === "Authenticated") {
+            setIsLoggedIn(true);
+          } else {
+            setIsLoggedIn(false);
+            // Видаляємо невалідний токен
+            localStorage.removeItem("token");
+            localStorage.removeItem("refreshToken");
+          }
+        })
+        .catch((error) => {
+          console.error("Auth check failed:", error);
           setIsLoggedIn(false);
-          // Видаляємо невалідний токен
+          // Видаляємо токен при помилці
           localStorage.removeItem("token");
           localStorage.removeItem("refreshToken");
-        }
-      })
-      .catch((error) => {
-        console.error("Auth check failed:", error);
-        setIsLoggedIn(false);
-        // Видаляємо токен при помилці
-        localStorage.removeItem("token");
-        localStorage.removeItem("refreshToken");
-      })
-      .finally(() => {
-        setIsChecking(false);
-      });
+        })
+        .finally(() => {
+          setIsChecking(false);
+        });
+    };
+
+    checkAuth();
   }, []);
 
   // Показуємо лоадер поки перевіряємо авторизацію
@@ -86,7 +95,7 @@ export default function App() {
   }
 
   // Після перевірки показуємо відповідні роути
-  if (isLogedIn) {
+  if (isLoggedIn) {
     return (
       <BrowserRouter>
         <Routes>
@@ -106,7 +115,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<GuseLayout />}>
+        <Route path="/" element={<GuestLayout />}>
           <Route index path="/" element={<MainPage />} />
           <Route path="/auth" element={<AuthElement />} />
           <Route path="*" element={<NotFound />} />

@@ -108,31 +108,6 @@ export default function Main() {
 
         <div className="mode-card">
           <div className="mode-icon">
-            <LuTimer />
-          </div>
-          <h3 className="mode-card-title">
-            <Trans i18nKey="MainPage.quickSection.title">Швидкий</Trans>
-          </h3>
-          <p className="mode-card-description">
-            <Trans i18nKey="MainPage.quickSection.description">
-              Навчіться писати літери, обводячи їх за трафаретом
-            </Trans>
-          </p>
-          <button
-            className="mode-card-button"
-            onClick={() => {
-              if (!loggedIn) {
-                return navigate("/auth");
-              }
-              return navigate("/select-language?sketch=quick");
-            }}
-          >
-            <Trans i18nKey="MainPage.startButton">Почати навчання →</Trans>
-          </button>
-        </div>
-
-        <div className="mode-card">
-          <div className="mode-icon">
             <LuUpload />
           </div>
           <h3 className="mode-card-title">

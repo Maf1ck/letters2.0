@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import WelcomeModal from "../../ModalWelcome/ModalWelcome.jsx";
 import "../Layouts.css";
 
-export default function UserLayout() {
+export default function GuestLayout() {
   const burgerMenuRef = useRef(null);
   const navLinksRef = useRef(null);
   const dropdownMenuRef = useRef(null);
@@ -38,14 +38,15 @@ export default function UserLayout() {
   }, []);
 
   useEffect(() => {
-   const hasSeenWelcome = localStorage.getItem("hasSeenWelcome");
+    const hasSeenWelcome = localStorage.getItem("hasSeenWelcome");
     if (!hasSeenWelcome) {
       setShowWelcomeModal(true);
       localStorage.setItem("hasSeenWelcome", "true");
     }
     // Показываем модальное окно при каждом заходе/перезагрузке страницы,
     // если пользователь не авторизован.
-    if (!localStorage.getItem("token")) {      setShowWelcomeModal(true);
+    if (!localStorage.getItem("token")) {
+      setShowWelcomeModal(true);
     }
   }, []);
 
@@ -70,7 +71,7 @@ export default function UserLayout() {
       )}
       <nav className="navbar">
         <Link className="navbar-logo" to="/">
-          Pysanka
+          Lettera
         </Link>
         <ul className="nav-links" id="nav-links" ref={navLinksRef}>
           <Link className="nav-links-item" to="/select-language?sketch=true">
@@ -86,11 +87,6 @@ export default function UserLayout() {
           <Link className="nav-links-item" to="/select-language?sketch=free">
             <li onClick={toggleMenu}>
               <Trans i18nKey="NavBar.list.ComparePage">Вільний режим</Trans>
-            </li>
-          </Link>
-          <Link className="nav-links-item" to="/select-language?sketch=quick">
-            <li onClick={toggleMenu}>
-              <Trans i18nKey="NavBar.list.QuickMode">Швидкий режим</Trans>
             </li>
           </Link>
           {token ? (
@@ -117,16 +113,16 @@ export default function UserLayout() {
               </button>
             </Link>
           )}
-        <div
-          className="burger-menu"
-          id="burger-menu"
-          ref={burgerMenuRef}
-          onClick={toggleMenu}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+          <div
+            className="burger-menu"
+            id="burger-menu"
+            ref={burgerMenuRef}
+            onClick={toggleMenu}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
           <div className="select-language-wrapper" ref={dropdownRef}>
             <div className="dropdown-container">
               <button
@@ -136,70 +132,27 @@ export default function UserLayout() {
                 <img src={languagesImage} alt="Language selector" />
               </button>
               <div className={`dropdown-menu ${isOpen ? "active" : ""}`}>
-                <button
-                  onClick={() => {
-                    changeLanguage("en");
-                    setIsOpen(false);
-                  }}
-                >
-                  English
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("ro");
-                    setIsOpen(false);
-                  }}
-                >
-                  Română
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("ua");
-                    setIsOpen(false);
-                  }}
-                >
-                  Українська
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("ch");
-                    setIsOpen(false);
-                  }}
-                >
-                  中文
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("fr");
-                    setIsOpen(false);
-                  }}
-                >
-                  Français
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("jp");
-                    setIsOpen(false);
-                  }}
-                >
-                  日本語
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("es");
-                    setIsOpen(false);
-                  }}
-                >
-                  Español
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("de");
-                    setIsOpen(false);
-                  }}
-                >
-                  Deutsch
-                </button>
+                {[
+                  { code: "en", label: "English" },
+                  { code: "ro", label: "Română" },
+                  { code: "ua", label: "Українська" },
+                  { code: "ch", label: "中文" },
+                  { code: "fr", label: "Français" },
+                  { code: "jp", label: "日本語" },
+                  { code: "es", label: "Español" },
+                  { code: "de", label: "Deutsch" },
+                ].map((lang) => (
+                  <button
+                    key={lang.code}
+                    className={i18n.language === lang.code ? "active-lang" : ""}
+                    onClick={() => {
+                      changeLanguage(lang.code);
+                      setIsOpen(false);
+                    }}
+                  >
+                    {lang.label}
+                  </button>
+                ))}
               </div>
             </div>
           </div>

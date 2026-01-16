@@ -56,7 +56,7 @@ export default function UserLayout() {
         <Link className="navbar-logo" to="/">
           Lettera
         </Link>
-        
+
         <ul className="nav-links" id="nav-links" ref={navLinksRef}>
           <Link className="nav-links-item" to="/select-language?sketch=true">
             <li
@@ -88,26 +88,18 @@ export default function UserLayout() {
               <Trans i18nKey="NavBar.list.ComparePage">Вільний режим</Trans>
             </li>
           </Link>
-          <Link className="nav-links-item" to="/select-language?sketch=quick">
-            <li
-              onClick={toggleMenu}
-              className={sketch === "quick" ? "current" : ""}
-            >
-              <Trans i18nKey="NavBar.list.QuickMode">Швидкий режим</Trans>
-            </li>
-          </Link>
         </ul>
         <div className="languages-doc-container">
-        <div
-          className="burger-menu"
-          id="burger-menu"
-          ref={burgerMenuRef}
-          onClick={toggleMenu}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+          <div
+            className="burger-menu"
+            id="burger-menu"
+            ref={burgerMenuRef}
+            onClick={toggleMenu}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
           <div className="select-language-wrapper" ref={dropdownRef}>
             <div className="dropdown-container">
               <button
@@ -117,70 +109,27 @@ export default function UserLayout() {
                 <img src={languagesImage} alt="Language selector" />
               </button>
               <div className={`dropdown-menu ${isOpen ? "active" : ""}`}>
-                <button
-                  onClick={() => {
-                    changeLanguage("en");
-                    setIsOpen(false);
-                  }}
-                >
-                  English
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("ro");
-                    setIsOpen(false);
-                  }}
-                >
-                  Română
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("ua");
-                    setIsOpen(false);
-                  }}
-                >
-                  Українська
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("ch");
-                    setIsOpen(false);
-                  }}
-                >
-                  中文
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("fr");
-                    setIsOpen(false);
-                  }}
-                >
-                  Français
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("jp");
-                    setIsOpen(false);
-                  }}
-                >
-                  日本語
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("es");
-                    setIsOpen(false);
-                  }}
-                >
-                  Español
-                </button>
-                <button
-                  onClick={() => {
-                    changeLanguage("de");
-                    setIsOpen(false);
-                  }}
-                >
-                  Deutsch
-                </button>
+                {[
+                  { code: "en", label: "English" },
+                  { code: "ro", label: "Română" },
+                  { code: "ua", label: "Українська" },
+                  { code: "ch", label: "中文" },
+                  { code: "fr", label: "Français" },
+                  { code: "jp", label: "日本語" },
+                  { code: "es", label: "Español" },
+                  { code: "de", label: "Deutsch" },
+                ].map((lang) => (
+                  <button
+                    key={lang.code}
+                    className={i18n.language === lang.code ? "active-lang" : ""}
+                    onClick={() => {
+                      changeLanguage(lang.code);
+                      setIsOpen(false);
+                    }}
+                  >
+                    {lang.label}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
