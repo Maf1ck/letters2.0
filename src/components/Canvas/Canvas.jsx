@@ -133,6 +133,7 @@ export default function Canvas() {
     fetch("https://letters-back.vercel.app/letter", {
       headers: {
         "Content-Type": "application/json",
+        "Authorization":`Bearer ${token}`
       },
       method: "POST",
       body: JSON.stringify({
