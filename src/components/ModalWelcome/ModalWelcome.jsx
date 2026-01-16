@@ -16,7 +16,7 @@ export default function ModalWelcome({ onClose }) {
       <div className="welcome-content">
         <h2>
           <Trans i18nKey="welcomeModal.title">
-            Ласкаво просимо до Pysanka!
+            Ласкаво просимо до Lettera!
           </Trans>
         </h2>
         <p>

@@ -18,10 +18,10 @@ export default function App() {
     const checkAuth = async () => {
       const token = localStorage.getItem("token");
 
-      // Якщо токена немає взагалі - одразу встановлюємо false
+      // Якщо токена немає взагалі - пробуємо автоматичний вхід як тестовий юзер
       if (!token) {
         try {
-          await fetch("https://letters-back.vercel.app/signin", {
+          const response = await fetch("https://letters-back.vercel.app/signin", {
             headers: {
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*",
@@ -32,6 +32,17 @@ export default function App() {
               password: "1234",
             }),
           });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.token) {
+              localStorage.setItem("token", data.token);
+              if (data.refreshToken) localStorage.setItem("refreshToken", data.refreshToken);
+              setIsLoggedIn(true);
+              setIsChecking(false);
+              return;
+            }
+          }
         } catch (e) {
           console.error("Auto-signin failed:", e);
         }
