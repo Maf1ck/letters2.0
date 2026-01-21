@@ -128,6 +128,9 @@ async function sendLetterForEvaluation(language, letter, userImage, ethalonImage
   }
 }
 
+const TOTAL_LETTERS = 6;
+const TIME_PER_LETTER = 20; // секунд на кожну літеру
+
 export default function Quiz() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -148,12 +151,10 @@ export default function Quiz() {
   );
   const canvasRef = useRef(null);
   const timerRef = useRef(null);
-  
-  const TOTAL_LETTERS = 6;
-  const TIME_PER_LETTER = 20; // секунд на кожну літеру
+
 
   // Setup PDF generation
-  const { toPDF, targetRef } = usePDF({ 
+  const { toPDF, targetRef } = usePDF({
     filename: `quiz-results-${language || 'unknown'}-${new Date().toISOString().split('T')[0]}.pdf`,
     page: {
       margin: 20,
@@ -168,7 +169,7 @@ export default function Quiz() {
 
   const handleNextLetter = useCallback(async () => {
     setIsTransitioning(true);
-    
+
     if (currentLetterIndex >= letters.length - 1) {
       setIsQuizFinished(true);
       setIsTransitioning(false);
@@ -184,7 +185,7 @@ export default function Quiz() {
     if (canvasRef.current) {
       canvasRef.current.clearCanvas();
     }
-    
+
     setIsTransitioning(false);
   }, [currentLetterIndex, letters.length]);
 
@@ -459,8 +460,8 @@ export default function Quiz() {
             >
               <Trans i18nKey="quizPage.goHome">На головну</Trans>
             </button>
-            <button 
-              className="quiz-button quiz-button-secondary" 
+            <button
+              className="quiz-button quiz-button-secondary"
               onClick={() => toPDF()}
               disabled={!allResultsLoaded || isSubmitting}
             >
@@ -481,7 +482,7 @@ export default function Quiz() {
           <div className="loader-spinner"></div>
         </div>
       )}
-      
+
       <div className="quiz-timer-bar">
         <div
           className="quiz-timer-progress"
@@ -493,15 +494,10 @@ export default function Quiz() {
       </div>
 
       <div className="quiz-progress">
-        <Trans 
-          i18nKey="quizPage.progress" 
-          values={{ 
-            current: currentLetterIndex + 1, 
-            total: TOTAL_LETTERS 
-          }}
-        >
-          Літера {{current: currentLetterIndex + 1}} з {{total: TOTAL_LETTERS}}
-        </Trans>
+        {t("quizPage.progress", {
+          current: currentLetterIndex + 1,
+          total: TOTAL_LETTERS,
+        })}
       </div>
 
       <div className="quiz-letter-display">{currentLetter}</div>
