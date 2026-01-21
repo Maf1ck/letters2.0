@@ -7,9 +7,6 @@ import { useTranslation, Trans } from "react-i18next";
 import { usePDF } from "react-to-pdf";
 import "./Quiz.css";
 
-const TOTAL_LETTERS = 6;
-const TIME_PER_LETTER = 20; // секунд на кожну літеру
-
 async function getLetters(language) {
   try {
     const response = await fetch(
@@ -152,6 +149,9 @@ export default function Quiz() {
   const canvasRef = useRef(null);
   const timerRef = useRef(null);
   
+  const TOTAL_LETTERS = 6;
+  const TIME_PER_LETTER = 20; // секунд на кожну літеру
+
   // Setup PDF generation
   const { toPDF, targetRef } = usePDF({ 
     filename: `quiz-results-${language || 'unknown'}-${new Date().toISOString().split('T')[0]}.pdf`,
