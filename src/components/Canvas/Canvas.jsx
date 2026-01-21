@@ -23,7 +23,7 @@ const STATUS = {
 const speakLetter = (letter, language) => {
   if ('speechSynthesis' in window) {
     const utterance = new SpeechSynthesisUtterance(letter);
-    
+
     // Мапінг мов для SpeechSynthesis
     const langMap = {
       'ua': 'uk-UA',
@@ -35,12 +35,12 @@ const speakLetter = (letter, language) => {
       'es': 'es-ES',
       'de': 'de-DE'
     };
-    
+
     utterance.lang = langMap[language] || 'en-US';
     utterance.rate = 0.8;
     utterance.pitch = 1;
     utterance.volume = 1;
-    
+
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
   } else {
@@ -70,7 +70,7 @@ export default function Canvas() {
   );
 
   const { t, i18n } = useTranslation();
-  
+
   const searchParams = new URLSearchParams(location.search);
   const sketchOrNot = searchParams.get("sketch") === "true";
   const letter = searchParams.get("letter");
@@ -81,10 +81,10 @@ export default function Canvas() {
       const currentLang = localStorage.getItem('i18nextLng');
       setUserLanguage(currentLang);
     };
-    
+
     handleLanguageChange();
     window.addEventListener('storage', handleLanguageChange);
-    
+
     return () => {
       window.removeEventListener('storage', handleLanguageChange);
     };
@@ -133,7 +133,7 @@ export default function Canvas() {
     fetch("https://letters-back.vercel.app/letter", {
       headers: {
         "Content-Type": "application/json",
-        "Authorization":`Bearer ${token}`
+        "Authorization": `Bearer ${token}`
       },
       method: "POST",
       body: JSON.stringify({
@@ -185,18 +185,20 @@ export default function Canvas() {
     setStyles((prevStyles) => {
       return { ...prevStyles, pointerEvents: "none" };
     });
-    
+
     canvasRef.current
       .exportImage("png")
       .then(async (data) => {
         const userPicture = data;
         const ethalonImage = await convertSvgToPng(letterImage);
-        
+
         if (!ethalonImage) {
           console.error("Failed to convert SVG to PNG");
+          setIsLoading(false);
+          setStyles((prev) => ({ ...prev, pointerEvents: "auto" }));
           return;
         }
-        
+
         const resp = await fetch(
           "https://letters-back.vercel.app/sendImages",
           {
@@ -215,19 +217,26 @@ export default function Canvas() {
           },
         );
         const response = await resp.json();
-        if (response.message === "Not authenticated.") {
-          alert("Not authenticated");
-        } else if (response.message === "Token expired.") {
-          alert("Token expired");
-        }
-        setResult(() => {
-          const newValue = response.percents;
-          setStyles(styles);
-          setAdvice(response.result.advice);
-          resultModalRef.current.open();
+
+        if (!resp.ok) {
+          console.error("Server error:", response);
+          if (response.message === "Not authenticated.") {
+            alert("Not authenticated");
+          } else if (response.message === "Token expired.") {
+            alert("Token expired");
+          } else {
+            alert(response.message || "Something went wrong on the server");
+          }
           setIsLoading(false);
-          return newValue;
-        });
+          setStyles((prev) => ({ ...prev, pointerEvents: "auto" }));
+          return;
+        }
+
+        setResult(response.percents);
+        setAdvice(response.result?.advice || "No advice available");
+        setStyles((prev) => ({ ...prev, pointerEvents: "auto" }));
+        resultModalRef.current.open();
+        setIsLoading(false);
       })
       .catch((e) => {
         console.log(e);
@@ -247,9 +256,9 @@ export default function Canvas() {
       <div className="canvas-navigation">
         <div className="nav-arrow-left">
           <span className="nav-letter">{prevLetter}</span>
-          <button 
+          <button
             className="nav-arrow-button"
-            disabled={isLoading || !prevLetter} 
+            disabled={isLoading || !prevLetter}
             onClick={() => handleArrowClick("prev")}
           >
             <img
@@ -261,9 +270,9 @@ export default function Canvas() {
         </div>
         <div className="canvas-main-letter">{letter}</div>
         <div className="nav-arrow-right">
-          <button 
+          <button
             className="nav-arrow-button"
-            disabled={isLoading || !nextLetter} 
+            disabled={isLoading || !nextLetter}
             onClick={() => handleArrowClick("next")}
           >
             <img
