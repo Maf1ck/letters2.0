@@ -13,7 +13,7 @@ const TIME_PER_LETTER = 20; // секунд на кожну літеру
 async function getLetters(language) {
   try {
     const response = await fetch(
-      "https://letters-back.vercel.app/letters",
+      "https://lettera-backend.vercel.app/letters",
       {
         headers: {
           "Content-Type": "application/json",
@@ -35,7 +35,7 @@ async function getLetters(language) {
 
 async function getLetterImage(language, letter) {
   try {
-    const response = await fetch("https://letters-back.vercel.app/letter", {
+    const response = await fetch("https://lettera-backend.vercel.app/letter", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -61,14 +61,13 @@ async function getLetterImage(language, letter) {
   }
 }
 
-async function sendLetterForEvaluation(token, language, letter, userImage, ethalonImage, systemLanguage) {
+async function sendLetterForEvaluation(language, letter, userImage, ethalonImage, systemLanguage) {
   try {
     const response = await fetch(
-      "https://letters-back.vercel.app/letter/quiz",
+      "https://lettera-backend.vercel.app/sendImages",
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
         },
         method: "POST",
         body: JSON.stringify({
@@ -81,11 +80,45 @@ async function sendLetterForEvaluation(token, language, letter, userImage, ethal
       },
     );
     const data = await response.json();
+
+    // Backend returns shape like: { percents, result: { percents, advice, status } }
+    const rawPercents =
+      typeof data.percents === "number"
+        ? data.percents
+        : typeof data.result?.percents === "number"
+          ? data.result.percents
+          : null;
+
+    const status =
+      data.result?.status ||
+      (typeof rawPercents === "number"
+        ? rawPercents >= 80
+          ? "good"
+          : rawPercents >= 50
+            ? "average"
+            : "bad"
+        : null);
+
+    // Оновлюємо локальний прогрес
+    try {
+      const stored = localStorage.getItem("letteraProgress");
+      const progress = stored ? JSON.parse(stored) : {};
+      if (!progress[language]) progress[language] = {};
+      progress[language][letter] = {
+        status,
+        percents: rawPercents ?? 0,
+        updatedAt: new Date().toISOString(),
+      };
+      localStorage.setItem("letteraProgress", JSON.stringify(progress));
+    } catch (e) {
+      console.error("Failed to save progress to localStorage", e);
+    }
+
     return {
       letter: letter,
-      percents: data.percents,
-      advice: data.advice || "",
-      status: data.status || null,
+      percents: rawPercents ?? 0,
+      advice: data.result?.advice || "",
+      status,
     };
   } catch (e) {
     console.error(e);
@@ -104,7 +137,6 @@ export default function Quiz() {
   const { t, i18n } = useTranslation();
   const searchParams = new URLSearchParams(location.search);
   const language = searchParams.get("language");
-  const token = localStorage.getItem("token");
 
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
   const [letters, setLetters] = useState([]);
@@ -228,7 +260,6 @@ export default function Quiz() {
       await new Promise(resolve => setTimeout(resolve, 800));
 
       sendLetterForEvaluation(
-        token,
         language,
         currentLetter,
         userPicture,

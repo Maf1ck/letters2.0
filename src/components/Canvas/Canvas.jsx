@@ -60,7 +60,6 @@ export default function Canvas() {
   const [isLoading, setIsLoading] = useState(false);
   const canvasRef = useRef(null);
   const resultModalRef = useRef(null);
-  const [token, setToken] = useState(localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
   const [styles, setStyles] = useState({
     border: "3px solid rgb(184, 184, 184)",
@@ -130,10 +129,9 @@ export default function Canvas() {
       }
       return;
     }
-    fetch("https://letters-back.vercel.app/letter", {
+    fetch("https://lettera-backend.vercel.app/letter", {
       headers: {
         "Content-Type": "application/json",
-        "Authorization":`Bearer ${token}`
       },
       method: "POST",
       body: JSON.stringify({
@@ -198,11 +196,10 @@ export default function Canvas() {
         }
         
         const resp = await fetch(
-          "https://letters-back.vercel.app/sendImages",
+          "https://lettera-backend.vercel.app/sendImages",
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
             },
             method: "POST",
             body: JSON.stringify({
@@ -215,10 +212,31 @@ export default function Canvas() {
           },
         );
         const response = await resp.json();
-        if (response.message === "Not authenticated.") {
-          alert("Not authenticated");
-        } else if (response.message === "Token expired.") {
-          alert("Token expired");
+
+        // Зберігаємо прогрес у localStorage (без авторизації)
+        try {
+          const stored = localStorage.getItem("letteraProgress");
+          const progress = stored ? JSON.parse(stored) : {};
+          if (!progress[language]) progress[language] = {};
+
+          const status =
+            response.result?.status ||
+            (typeof response.percents === "number"
+              ? response.percents >= 80
+                ? "good"
+                : response.percents >= 50
+                  ? "average"
+                  : "bad"
+              : null);
+
+          progress[language][letter] = {
+            status,
+            percents: response.percents ?? 0,
+            updatedAt: new Date().toISOString(),
+          };
+          localStorage.setItem("letteraProgress", JSON.stringify(progress));
+        } catch (e) {
+          console.error("Failed to save progress to localStorage", e);
         }
         setResult(() => {
           const newValue = response.percents;
