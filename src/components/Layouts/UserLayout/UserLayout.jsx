@@ -88,6 +88,16 @@ export default function UserLayout() {
               <Trans i18nKey="NavBar.list.ComparePage">Вільний режим</Trans>
             </li>
           </Link>
+          <Link className="nav-links-item" to="/select-language?sketch=quick">
+            <li
+              onClick={toggleMenu}
+              className={
+                sketch === "quick" || mode === "quiz" ? "current" : ""
+              }
+            >
+              <Trans i18nKey="NavBar.list.QuizPage">Quiz</Trans>
+            </li>
+          </Link>
         </ul>
         <div className="languages-doc-container">
           <div

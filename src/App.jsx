@@ -4,131 +4,19 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./components/MainPage/MainPage.jsx";
 import FileUploader from "./components/FileUploader/FileUploader.jsx";
 import SelectLanguage from "./components/SelectLanguage/SelectLanguage.jsx";
-import AuthElement from "./components/Auth/AuthElement.jsx";
-import GuestLayout from "./components/Layouts/GuestLayout/GuestLayout.jsx";
 import NotFound from "./components/404/404.jsx";
 import Quiz from "./components/Quiz/Quiz.jsx";
-import { useEffect, useState } from "react";
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(null); // null = перевірка, true/false = результат
-  const [isChecking, setIsChecking] = useState(true); // новий стан для відстеження перевірки
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem("token");
-
-      // Якщо токена немає взагалі - пробуємо автоматичний вхід як тестовий юзер
-      if (!token) {
-        try {
-          const response = await fetch("https://letters-back.vercel.app/signin", {
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-            },
-            method: "POST",
-            body: JSON.stringify({
-              email: "test@test.com",
-              password: "1234",
-            }),
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            if (data.token) {
-              localStorage.setItem("token", data.token);
-              if (data.refreshToken) localStorage.setItem("refreshToken", data.refreshToken);
-              setIsLoggedIn(true);
-              setIsChecking(false);
-              return;
-            }
-          }
-        } catch (e) {
-          console.error("Auto-signin failed:", e);
-        }
-        setIsLoggedIn(false);
-        setIsChecking(false);
-        return;
-      }
-
-      // Перевіряємо токен на сервері
-      fetch("https://letters-back.vercel.app/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.message === "Authenticated") {
-            setIsLoggedIn(true);
-          } else {
-            setIsLoggedIn(false);
-            // Видаляємо невалідний токен
-            localStorage.removeItem("token");
-            localStorage.removeItem("refreshToken");
-          }
-        })
-        .catch((error) => {
-          console.error("Auth check failed:", error);
-          setIsLoggedIn(false);
-          // Видаляємо токен при помилці
-          localStorage.removeItem("token");
-          localStorage.removeItem("refreshToken");
-        })
-        .finally(() => {
-          setIsChecking(false);
-        });
-    };
-
-    checkAuth();
-  }, []);
-
-  // Показуємо лоадер поки перевіряємо авторизацію
-  if (isChecking) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: 'white'
-      }}>
-        <div style={{
-          width: '50px',
-          height: '50px',
-          border: '4px solid #e2e8f0',
-          borderTop: '4px solid #87CEEB',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }}></div>
-      </div>
-    );
-  }
-
-  // Після перевірки показуємо відповідні роути
-  if (isLoggedIn) {
-    return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<UserLayout />}>
-            <Route index path="/" element={<MainPage />} />
-            <Route path="canvas" element={<Canvas />} />
-            <Route path="file-uploader" element={<FileUploader />} />
-            <Route path="select-language" element={<SelectLanguage />} />
-            <Route path="quiz" element={<Quiz />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    );
-  }
-
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<GuestLayout />}>
+        <Route path="/" element={<UserLayout />}>
           <Route index path="/" element={<MainPage />} />
-          <Route path="/auth" element={<AuthElement />} />
+          <Route path="canvas" element={<Canvas />} />
+          <Route path="file-uploader" element={<FileUploader />} />
+          <Route path="select-language" element={<SelectLanguage />} />
+          <Route path="quiz" element={<Quiz />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

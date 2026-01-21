@@ -27,7 +27,6 @@ export default function FileUploader() {
     localStorage.getItem('i18nextLng') || 'en'
   );
   const { t, i18n } = useTranslation();
-  const token = localStorage.getItem("token");
   const searchParams = new URLSearchParams(location.search);
   const letter = searchParams.get("letter");
   const language = searchParams.get("language");
@@ -55,7 +54,7 @@ export default function FileUploader() {
     if (letter === null || language === null || !letter || !language) {
       return navigate(`/select-language?sketch=free`);
     }
-    fetch("https://letters-back.vercel.app/letter", {
+    fetch("https://lettera-backend.vercel.app/letter", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -130,12 +129,11 @@ export default function FileUploader() {
       const userBase64 = await toBase64(userFile);
 
       const response = await fetch(
-        "https://letters-back.vercel.app/sendImages",
+        "https://lettera-backend.vercel.app/sendImages",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
           },
           body: JSON.stringify({
             ethalonImage: letterImage,
@@ -155,6 +153,32 @@ export default function FileUploader() {
       console.log(data);
       setModalText(data.percents);
       setAdvice(data.result.advice);
+
+      // Зберігаємо прогрес у localStorage (без авторизації)
+      try {
+        const stored = localStorage.getItem("letteraProgress");
+        const progress = stored ? JSON.parse(stored) : {};
+        if (!progress[language]) progress[language] = {};
+
+        const status =
+          data.result?.status ||
+          (typeof data.percents === "number"
+            ? data.percents >= 80
+              ? "good"
+              : data.percents >= 50
+                ? "average"
+                : "bad"
+            : null);
+
+        progress[language][letter] = {
+          status,
+          percents: data.percents ?? 0,
+          updatedAt: new Date().toISOString(),
+        };
+        localStorage.setItem("letteraProgress", JSON.stringify(progress));
+      } catch (e) {
+        console.error("Failed to save progress to localStorage", e);
+      }
     } catch (error) {
       console.error("Error sending files:", error);
       setModalText("Error occurred while sending files.");

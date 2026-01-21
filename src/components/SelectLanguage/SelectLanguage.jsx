@@ -10,27 +10,11 @@ const STATUS = {
   NOT_DONE: null,
 };
 
-async function getResults(token) {
-  const response = await fetch(
-    "https://letters-back.vercel.app/getUserProgress",
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    },
-  );
-  const data = await response.json();
-  if (data.message === "Not authenticated.") {
-    alert("Not authenticated");
-  } else if (data.message === "Token expired.") {
-    alert("Token expired");
-  }
-  return data;
-}
+// Літери завжди отримуємо з бекенду, але прогрес зберігаємо/читаємо з localStorage
 async function getLetters(language) {
   try {
     const response = await fetch(
-      "https://letters-back.vercel.app/letters",
+      "https://lettera-backend.vercel.app/letters",
       {
         headers: {
           "Content-Type": "application/json",
@@ -54,11 +38,10 @@ export default function SelectLanguage() {
   const [selectedLetter, setSelectedLetter] = useState(null);
   const [currentLetters, setCurrentLetters] = useState([]);
   const [loading, setLoading] = useState(true); // Track loading
-  const [results, setResults] = useState({});
+  const [results, setResults] = useState({ progress: {} });
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
-  const [token, setToken] = useState(localStorage.getItem("token"));
   const searchParams = new URLSearchParams(location.search);
   let sketchOrNot = searchParams.get("sketch");
   if (!sketchOrNot) {
@@ -75,12 +58,17 @@ export default function SelectLanguage() {
   }, [selectedLanguage]);
 
   useEffect(() => {
-    const fetchResults = async () => {
-      const data = await getResults(token);
-      setResults(data);
-    };
-    fetchResults();
-  }, [token]);
+    // Читаємо прогрес з localStorage замість бекенду
+    try {
+      const stored = localStorage.getItem("letteraProgress");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setResults({ progress: parsed });
+      }
+    } catch (e) {
+      console.error("Failed to read progress from localStorage", e);
+    }
+  }, []);
 
   const handleStart = () => {
     if (selectedLetter !== null) {
@@ -92,6 +80,8 @@ export default function SelectLanguage() {
         navigate(
           `/file-uploader?language=${selectedLanguage}&letter=${selectedLetter}`,
         );
+      } else if (sketchOrNot === "quick") {
+        navigate(`/quiz?language=${selectedLanguage}`);
       } else {
         navigate(
           `/canvas?language=${selectedLanguage}&letter=${selectedLetter}&sketch=${sketchOrNot}`,
